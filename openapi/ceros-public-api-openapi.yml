@@ -1,0 +1,1224 @@
+openapi: 3.1.0
+info:
+  title: Ceros Public API
+  version: 2026-05-28-09-00
+  description: Public API documentation for external integrations. Requires API key authentication.
+  contact:
+    name: Ceros Developer Docs
+    url: https://developers.ceros.com/
+  x-source: Reconstructed verbatim from the OpenAPI operation objects Ceros publishes in its own developer
+    documentation payloads at developers.ceros.com; Ceros does not serve a downloadable spec file.
+  x-evidence:
+    fetched: '2026-08-09'
+    docs_url: https://developers.ceros.com/api/public/ceros-public-api
+    http_status: 200
+    api_host_probe:
+      url: https://rest.ceros.com/accounts/current-account
+      http_status: 401
+      body: '{"message":"UNAUTHORIZED"}'
+servers:
+- url: https://rest.ceros.com
+  description: Production server
+tags:
+- name: accounts
+- name: embedCodes
+- name: experience
+- name: folders
+paths:
+  /accounts/current-account:
+    get:
+      summary: Get current account
+      description: Returns the name and resource ID of the account associated with the API key used to
+        authenticate the request. Use this to discover the `accountResourceId` required by the account-scoped
+        endpoints. Responds 401 when the API key is missing or invalid.
+      tags:
+      - accounts
+      parameters: []
+      operationId: getCurrentAccount
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  accountName:
+                    description: Display name of the account
+                    type: string
+                  accountResourceId:
+                    description: Resource identifier of the account, used to scope other requests
+                    type: string
+                required:
+                - accountName
+                - accountResourceId
+                additionalProperties: false
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  errors:
+                    description: One entry per problem encountered while handling the request
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          description: Human-readable explanation of the error
+                          type: string
+                        cause:
+                          description: Per-field validation failures, when the error is a validation error
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                description: Machine-readable validation code
+                                type: string
+                              expected:
+                                description: Value or type the field expected
+                                type: string
+                              message:
+                                description: Human-readable explanation for this field
+                                type: string
+                              path:
+                                description: Property path to the offending field, outermost segment first
+                                type: array
+                                items:
+                                  type: string
+                              received:
+                                description: Value the field actually received
+                                type: string
+                            required:
+                            - code
+                            - expected
+                            - message
+                            - path
+                            - received
+                            additionalProperties: false
+                      required:
+                      - message
+                      additionalProperties: false
+                required:
+                - errors
+                additionalProperties: false
+        '401':
+          description: '401'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  errors:
+                    description: One entry per problem encountered while handling the request
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          description: Human-readable explanation of the error
+                          type: string
+                        cause:
+                          description: Per-field validation failures, when the error is a validation error
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                description: Machine-readable validation code
+                                type: string
+                              expected:
+                                description: Value or type the field expected
+                                type: string
+                              message:
+                                description: Human-readable explanation for this field
+                                type: string
+                              path:
+                                description: Property path to the offending field, outermost segment first
+                                type: array
+                                items:
+                                  type: string
+                              received:
+                                description: Value the field actually received
+                                type: string
+                            required:
+                            - code
+                            - expected
+                            - message
+                            - path
+                            - received
+                            additionalProperties: false
+                      required:
+                      - message
+                      additionalProperties: false
+                required:
+                - errors
+                additionalProperties: false
+      security:
+      - bearerAuth: []
+  /accounts/{accountResourceId}/folder-tree:
+    get:
+      summary: Get account folder tree
+      description: Returns the folder hierarchy of an account as nested `children`, limited to the folders
+        the caller can access. `depth` bounds how many levels are returned (2 by default) and `folder`
+        restricts the result to one branch. Experiences and member counts are expensive and excluded by
+        default — request them with `expand=experiences,members`. Responds 404 when the account does not
+        exist or the caller has no access to it.
+      tags:
+      - folders
+      parameters:
+      - name: accountResourceId
+        in: path
+        description: Resource identifier of the account
+        required: true
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: 'Comma-separated related data to inline. Supported values: `experiences`, `members`'
+        content:
+          application/json:
+            schema:
+              type: string
+      - name: folder
+        in: query
+        description: Resource identifier of a folder to restrict the tree to. Returns that folder and
+          its descendants, plus its ancestors for structure only
+        content:
+          application/json:
+            schema:
+              type: string
+      - name: depth
+        in: query
+        description: Maximum number of folder levels to return below the root. Set to 0 to return all
+          levels.
+        required: true
+        content:
+          application/json:
+            schema:
+              default: 2
+              type: integer
+              minimum: 0
+              maximum: 9007199254740991
+      operationId: getFolderTree
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                TypeId: a4dd4ec6-7f20-4917-bd9b-b2057a5caae9
+                type: object
+                properties:
+                  resources:
+                    description: Root folders of the tree, each nesting its children
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        self:
+                          description: Canonical URL of this folder
+                          type: string
+                        resourceType:
+                          type: string
+                          const: folder
+                        resourceId:
+                          description: Resource identifier of the folder
+                          type: string
+                        legacyId:
+                          description: Legacy numeric identifier of the folder
+                        accountLegacyId:
+                          description: Legacy numeric identifier of the owning account
+                        accountResourceId:
+                          description: Resource identifier of the owning account
+                          type: string
+                        accountSlug:
+                          description: URL slug of the owning account
+                          type: string
+                        createdByMemberId:
+                          description: Legacy numeric identifier of the member who created the folder
+                        createdByMemberName:
+                          description: Display name of that member, null when unavailable
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        createdAt:
+                          description: When the folder was created
+                          type: string
+                          format: date-time
+                        deletedAt:
+                          description: When the folder was deleted, null while it is live
+                          anyOf:
+                          - description: ISO 8601 timestamp in UTC
+                            type: string
+                            format: date-time
+                          - type: 'null'
+                        parentResourceId:
+                          description: Resource identifier of the parent folder, null at the root
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        parentLegacyId:
+                          description: Legacy numeric identifier of the parent folder, null at the root
+                        parentSlug:
+                          description: URL slug of the parent folder, null at the root
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        parentName:
+                          description: Display name of the parent folder, null at the root
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        isAncestorDeleted:
+                          description: Whether any folder above this one has been deleted
+                          type: boolean
+                        lastModifiedByMemberId:
+                          description: Legacy numeric identifier of the member who last changed the folder
+                        lastModifiedByMemberName:
+                          description: Display name of that member, null when unavailable
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        lastModifiedAt:
+                          description: When the folder was last changed
+                          type: string
+                          format: date-time
+                        slug:
+                          description: URL slug of the folder
+                          type: string
+                        status:
+                          description: Current lifecycle state of the folder
+                          type: string
+                        thumbnailUrl:
+                          description: URL of the folder thumbnail, null when none has been generated
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        name:
+                          description: Display name of the folder
+                          type: string
+                        isFlexFolder:
+                          description: Whether the folder holds Flex experiences rather than Legacy ones
+                          type: boolean
+                        ancestors:
+                          description: Folders containing this one, outermost first
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              resourceId:
+                                description: Resource identifier of the ancestor folder
+                                type: string
+                              legacyId:
+                                description: Legacy numeric identifier of the ancestor folder
+                              name:
+                                description: Display name of the ancestor folder
+                                type: string
+                              slug:
+                                description: URL slug of the ancestor folder
+                                type: string
+                            required:
+                            - resourceId
+                            - legacyId
+                            - name
+                            - slug
+                            additionalProperties: false
+                        thumbnails:
+                          description: Up to four preview thumbnails for the folder, keyed by `experience-<slug>`
+                          type: object
+                          propertyNames:
+                            type: string
+                          additionalProperties:
+                            type: object
+                            properties:
+                              url:
+                                description: URL of the thumbnail image
+                                type: string
+                              isFlexExperience:
+                                description: Whether the thumbnail belongs to a Flex experience
+                                type: boolean
+                            required:
+                            - url
+                            - isFlexExperience
+                            additionalProperties: false
+                        updatedBy:
+                          description: Recent changes to the folder and who made them
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              folderResourceId:
+                                description: Resource identifier of the folder
+                                type: string
+                              folderLegacyId:
+                                description: Legacy numeric identifier of the folder
+                                type: string
+                              memberLegacyId:
+                                description: Legacy numeric identifier of the member who made the change
+                              memberResourceId:
+                                description: Resource identifier of the member who made the change
+                                type: string
+                              memberName:
+                                description: Display name of the member, null when unavailable
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              timestamp:
+                                description: When the change was made
+                                type: string
+                                format: date-time
+                            required:
+                            - folderResourceId
+                            - folderLegacyId
+                            - memberLegacyId
+                            - memberResourceId
+                            - memberName
+                            - timestamp
+                            additionalProperties: false
+                        legacyExperienceCount:
+                          description: Number of Legacy experiences in the folder
+                          type: number
+                        flexExperienceCount:
+                          description: Number of Flex experiences in the folder
+                          type: number
+                        experiences:
+                          description: Experiences in this folder, present when `expand=experiences`
+                          type: object
+                          properties:
+                            count:
+                              description: Number of experiences in the folder
+                              type: number
+                            self:
+                              description: URL listing the experiences of this folder
+                              type: string
+                            resources:
+                              description: The experiences themselves, empty unless expanded
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  resourceType:
+                                    type: string
+                                    const: experience
+                                  resourceId:
+                                    description: Resource identifier of the experience
+                                    type: string
+                                  legacyId:
+                                    description: Legacy numeric identifier of the experience
+                                  name:
+                                    description: Display name of the experience
+                                    type: string
+                                  slug:
+                                    description: URL slug of the experience
+                                    type: string
+                                  folderSlug:
+                                    description: Slug of the folder that directly contains the experience
+                                    type: string
+                                  status:
+                                    description: Current lifecycle state of the experience
+                                    type: string
+                                    enum:
+                                    - published
+                                    - draft
+                                    - deleted
+                                    - unpublished
+                                  thumbnailUrl:
+                                    description: URL of the experience thumbnail, null when none has been
+                                      generated
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                  isFlexExperience:
+                                    description: Whether this is a Flex experience rather than a Legacy
+                                      one
+                                    type: boolean
+                                  partner:
+                                    description: Partner the experience belongs to, null when not partner-owned
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                  primaryAliasSlug:
+                                    description: Slug the experience is publicly served under, null when
+                                      unpublished
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                  lastModifiedAt:
+                                    description: When the experience was last edited, null when never
+                                      edited
+                                    anyOf:
+                                    - description: ISO 8601 timestamp in UTC
+                                      type: string
+                                      format: date-time
+                                    - type: 'null'
+                                  lastModifiedByMemberResourceId:
+                                    description: Resource identifier of the member who last edited the
+                                      experience
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                  lastModifiedByMemberName:
+                                    description: Display name of that member
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                  publishHistory:
+                                    description: Publish-state changes recorded for the experience
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        memberResourceId:
+                                          description: Resource identifier of the member who changed the
+                                            publish state
+                                          type: string
+                                        memberName:
+                                          description: Display name of that member
+                                          type: string
+                                        status:
+                                          description: Publish state the experience moved to
+                                          type: string
+                                        timestamp:
+                                          description: When the publish state changed
+                                          type: string
+                                          format: date-time
+                                      required:
+                                      - memberResourceId
+                                      - memberName
+                                      - status
+                                      - timestamp
+                                      additionalProperties: false
+                                  ancestors:
+                                    description: Folders containing the experience, outermost first
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        resourceId:
+                                          description: Resource identifier of the ancestor folder
+                                          type: string
+                                        legacyId:
+                                          description: Legacy numeric identifier of the ancestor folder
+                                        name:
+                                          description: Display name of the ancestor folder
+                                          type: string
+                                        slug:
+                                          description: URL slug of the ancestor folder
+                                          type: string
+                                      required:
+                                      - resourceId
+                                      - legacyId
+                                      - name
+                                      - slug
+                                      additionalProperties: false
+                                required:
+                                - resourceType
+                                - resourceId
+                                - legacyId
+                                - name
+                                - slug
+                                - folderSlug
+                                - status
+                                - thumbnailUrl
+                                - isFlexExperience
+                                - partner
+                                - primaryAliasSlug
+                                - lastModifiedAt
+                                - lastModifiedByMemberResourceId
+                                - lastModifiedByMemberName
+                                - publishHistory
+                                - ancestors
+                                additionalProperties: false
+                          required:
+                          - count
+                          - self
+                          - resources
+                          additionalProperties: false
+                        members:
+                          description: Member summary for this folder, present when `expand=members`
+                          type: object
+                          properties:
+                            count:
+                              description: Number of members with access to the folder
+                              type: number
+                            self:
+                              description: URL listing the members of this folder
+                              type: string
+                          required:
+                          - count
+                          - self
+                          additionalProperties: false
+                        children:
+                          description: Child folders nested one level down, absent at the requested depth
+                            limit
+                          type: array
+                          items: circular(Def0___schema0)
+                      required:
+                      - self
+                      - resourceType
+                      - resourceId
+                      - legacyId
+                      - deletedAt
+                      - parentLegacyId
+                      - slug
+                      - name
+                      additionalProperties: false
+                      title: Def0___schema0
+                  count:
+                    description: Number of root folders returned
+                    type: number
+                  resourceType:
+                    type: string
+                    const: folder
+                required:
+                - resources
+                - count
+                - resourceType
+                additionalProperties: false
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  errors:
+                    description: One entry per problem encountered while handling the request
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          description: Human-readable explanation of the error
+                          type: string
+                        cause:
+                          description: Per-field validation failures, when the error is a validation error
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                description: Machine-readable validation code
+                                type: string
+                              expected:
+                                description: Value or type the field expected
+                                type: string
+                              message:
+                                description: Human-readable explanation for this field
+                                type: string
+                              path:
+                                description: Property path to the offending field, outermost segment first
+                                type: array
+                                items:
+                                  type: string
+                              received:
+                                description: Value the field actually received
+                                type: string
+                            required:
+                            - code
+                            - expected
+                            - message
+                            - path
+                            - received
+                            additionalProperties: false
+                      required:
+                      - message
+                      additionalProperties: false
+                required:
+                - errors
+                additionalProperties: false
+        '404':
+          description: '404'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  errors:
+                    description: One entry per problem encountered while handling the request
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          description: Human-readable explanation of the error
+                          type: string
+                        cause:
+                          description: Per-field validation failures, when the error is a validation error
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                description: Machine-readable validation code
+                                type: string
+                              expected:
+                                description: Value or type the field expected
+                                type: string
+                              message:
+                                description: Human-readable explanation for this field
+                                type: string
+                              path:
+                                description: Property path to the offending field, outermost segment first
+                                type: array
+                                items:
+                                  type: string
+                              received:
+                                description: Value the field actually received
+                                type: string
+                            required:
+                            - code
+                            - expected
+                            - message
+                            - path
+                            - received
+                            additionalProperties: false
+                      required:
+                      - message
+                      additionalProperties: false
+                required:
+                - errors
+                additionalProperties: false
+      security:
+      - bearerAuth: []
+  /experiences/{experienceResourceId}/embed-codes:
+    get:
+      summary: Get experience embed codes
+      description: 'Returns the embed snippets for an experience together with the URLs it is served from.
+        Which snippets are returned depends on the experience: Flex experiences always return full-height,
+        scrollable, and inline snippets, and are available before publishing; Legacy experiences must
+        be published and return only the snippet variants their layout supports. Responds 404 when the
+        experience is deleted, unpublished, or (Legacy only) has never been published.'
+      tags:
+      - embedCodes
+      parameters:
+      - name: experienceResourceId
+        in: path
+        description: Resource identifier of the experience
+        required: true
+        schema:
+          type: string
+      - name: isExport
+        in: query
+        description: Rewrite `viewUrl` and `assetBaseUrl` as paths relative to a self-hosted HTML export
+          instead of hosted URLs. Legacy experiences only
+        required: true
+        content:
+          application/json:
+            schema:
+              default: false
+              type: boolean
+      operationId: getEmbedCodes
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  viewUrl:
+                    description: URL the experience is served from, or a path relative to the export root
+                      when `isExport` is set
+                    type: string
+                  assetBaseUrl:
+                    description: Base URL the experience loads its published assets from, or a path relative
+                      to the export root when `isExport` is set
+                    type: string
+                  title:
+                    description: Title of the experience
+                    type: string
+                  experienceAlias:
+                    description: Legacy experience alias, empty string for Flex experiences
+                    type: string
+                  isPageOverHeightHomogeneous:
+                    description: Whether every page shares the same over-height setting, always false
+                      for Flex experiences
+                    type: boolean
+                  fullHeightEmbedCode:
+                    description: Embed snippet sized to the full height of each page, absent when the
+                      layout cannot support it
+                    type: string
+                  scrollableEmbedCode:
+                    description: Embed snippet that scrolls over-height pages inside a fixed-aspect container,
+                      absent when the layout cannot support it
+                    type: string
+                  inlineEmbedCode:
+                    description: Embed snippet that renders the experience inline in the host page, Flex
+                      experiences only
+                    type: string
+                required:
+                - viewUrl
+                - assetBaseUrl
+                - title
+                - experienceAlias
+                - isPageOverHeightHomogeneous
+                additionalProperties: false
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  errors:
+                    description: One entry per problem encountered while handling the request
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          description: Human-readable explanation of the error
+                          type: string
+                        cause:
+                          description: Per-field validation failures, when the error is a validation error
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                description: Machine-readable validation code
+                                type: string
+                              expected:
+                                description: Value or type the field expected
+                                type: string
+                              message:
+                                description: Human-readable explanation for this field
+                                type: string
+                              path:
+                                description: Property path to the offending field, outermost segment first
+                                type: array
+                                items:
+                                  type: string
+                              received:
+                                description: Value the field actually received
+                                type: string
+                            required:
+                            - code
+                            - expected
+                            - message
+                            - path
+                            - received
+                            additionalProperties: false
+                      required:
+                      - message
+                      additionalProperties: false
+                required:
+                - errors
+                additionalProperties: false
+      security:
+      - bearerAuth: []
+  /folder/{folderResourceId}/experiences:
+    get:
+      summary: List folder experiences
+      description: Returns a page of the experiences directly inside a folder, alongside the paging metadata
+        needed to walk the rest of the result set. Sub-folders are not traversed. Results can be narrowed
+        with `search` and ordered with `sort`. Responds 400 when `sort` is not one of the supported values,
+        and 404 when the folder does not exist or the caller cannot list its experiences.
+      tags:
+      - experience
+      parameters:
+      - name: folderResourceId
+        in: path
+        description: Resource identifier of the folder
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Page of results to return, 1-based. Defaults to 1
+        content:
+          application/json:
+            schema:
+              type: number
+      - name: pageSize
+        in: query
+        description: Results per page, capped at 50. Defaults to 50
+        content:
+          application/json:
+            schema:
+              type: number
+      - name: search
+        in: query
+        description: Filter experiences by name
+        content:
+          application/json:
+            schema:
+              type: string
+      - name: sort
+        in: query
+        description: 'Ordering of results: `alphabetical_a_to_z`, `alphabetical_z_to_a`, `last_created`,
+          `last_updated`, or `last_published`. Defaults to `last_created`'
+        content:
+          application/json:
+            schema:
+              type: string
+      operationId: listFolderExperiences
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                TypeId: b95dff99-c744-469c-8065-5894c9941038
+                type: object
+                properties:
+                  self:
+                    description: Canonical URL of this page of results
+                    type: string
+                  resourceType:
+                    description: Type of resource contained in `data`
+                    type: string
+                  paging:
+                    description: Pagination cursor and totals for this result set
+                    type: object
+                    properties:
+                      total:
+                        description: Total number of matching resources
+                        type: number
+                      page:
+                        description: Current page number, 1-based
+                        type: number
+                      pages:
+                        description: Total number of pages available
+                        type: number
+                      pageSize:
+                        description: Maximum resources returned per page
+                        type: number
+                      previous:
+                        description: URL of the previous page, absent on the first page
+                        type: string
+                      next:
+                        description: URL of the next page, absent on the last page
+                        type: string
+                    required:
+                    - total
+                    - page
+                    - pages
+                    - pageSize
+                    additionalProperties: false
+                  data:
+                    description: Resources on the current page
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        legacyId:
+                          description: Legacy numeric identifier of the experience
+                        name:
+                          description: Display name of the experience
+                          type: string
+                        slug:
+                          description: URL slug of the experience
+                          type: string
+                        resourceId:
+                          description: Resource identifier of the experience
+                          type: string
+                        experienceAlias:
+                          description: Primary alias slug the experience is addressed by
+                          type: string
+                        folderResourceId:
+                          description: Resource identifier of the folder containing the experience
+                          type: string
+                        createdAt:
+                          description: When the experience was created
+                          type: string
+                          format: date-time
+                        status:
+                          description: Current lifecycle state of the experience
+                          type: string
+                          enum:
+                          - published
+                          - draft
+                          - deleted
+                          - unpublished
+                        lastModifiedAt:
+                          description: When the experience was last edited
+                          type: string
+                          format: date-time
+                        firstPublishedAt:
+                          description: When the experience was first published
+                          type: string
+                          format: date-time
+                        lastPublishedAt:
+                          description: When the experience was most recently published
+                          type: string
+                          format: date-time
+                        isFlexExperience:
+                          description: Whether this is a Flex experience rather than a Legacy one
+                          type: boolean
+                        isPasswordProtected:
+                          description: Whether viewers must enter a password to open the experience
+                          type: boolean
+                        isSSOProtected:
+                          description: Whether viewers must sign in through SSO to open the experience
+                          type: boolean
+                        isTemplate:
+                          description: Whether the experience is a template rather than a live one
+                          type: boolean
+                        thumbnailUrl:
+                          description: URL of the first-page thumbnail
+                          type: string
+                        createdByMemberId:
+                          description: Legacy numeric identifier of the member who created the experience,
+                            0 when unknown
+                          type: number
+                        templateThumbnailUrl:
+                          description: URL of the template preview image, null when not a template
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        importLinkShared:
+                          description: Whether the experience can be imported by other accounts via link
+                          type: boolean
+                        isShowcaseExperience:
+                          description: Whether the experience is featured in the showcase
+                          type: boolean
+                        partner:
+                          description: Partner the experience belongs to, null when not partner-owned
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        partnerResourceId:
+                          description: Location of the experience at the partner, null when not linked
+                          anyOf:
+                          - type: object
+                            properties:
+                              resourceId:
+                                description: Identifier of the resource at the partner
+                                type: string
+                              tenant:
+                                description: Partner tenant the resource lives in
+                                type: string
+                              teamsiteId:
+                                description: Partner team site the resource belongs to
+                                type: string
+                            required:
+                            - resourceId
+                            - tenant
+                            additionalProperties: false
+                          - type: 'null'
+                        wipDocVersion:
+                          description: The in-progress draft version, absent when none is loaded
+                          type: object
+                          properties:
+                            adminEditable:
+                              description: Whether internal admins may edit the draft
+                              type: boolean
+                            textComponentType:
+                              description: Text engine the draft was authored with
+                              type: string
+                              enum:
+                              - old_text
+                              - text_plus
+                            editorPublishingDisabled:
+                              description: Whether publishing from the editor is blocked for this draft
+                              type: boolean
+                          required:
+                          - adminEditable
+                          - textComponentType
+                          - editorPublishingDisabled
+                          additionalProperties: false
+                        publishedDocVersion:
+                          description: The currently published version, absent when unpublished
+                          type: object
+                          properties:
+                            slug:
+                              description: Slug of the published version
+                              type: string
+                          required:
+                          - slug
+                          additionalProperties: false
+                        updatedBy:
+                          description: Recent edits to the experience and who made them
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              memberId:
+                                description: Legacy numeric identifier of the member who made the change
+                                type: number
+                              memberName:
+                                description: Display name of that member, empty when unavailable
+                                type: string
+                              timestamp:
+                                description: When the change was made
+                                type: string
+                            required:
+                            - memberId
+                            - memberName
+                            - timestamp
+                            additionalProperties: false
+                        publishHistory:
+                          description: Publish-state changes recorded for the experience
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              memberId:
+                                description: Legacy numeric identifier of the member who changed the publish
+                                  state
+                                type: number
+                              memberName:
+                                description: Display name of that member, empty when unavailable
+                                type: string
+                              status:
+                                description: Publish state the experience moved to
+                                type: string
+                                enum:
+                                - published
+                                - unpublished
+                              timestamp:
+                                description: When the publish state changed
+                                type: string
+                            required:
+                            - memberId
+                            - memberName
+                            - status
+                            - timestamp
+                            additionalProperties: false
+                      required:
+                      - legacyId
+                      - resourceId
+                      - experienceAlias
+                      - folderResourceId
+                      - createdAt
+                      - status
+                      - isFlexExperience
+                      - isPasswordProtected
+                      - isSSOProtected
+                      - isTemplate
+                      - createdByMemberId
+                      - templateThumbnailUrl
+                      - importLinkShared
+                      - isShowcaseExperience
+                      - partner
+                      - partnerResourceId
+                      - updatedBy
+                      - publishHistory
+                      additionalProperties: false
+                required:
+                - self
+                - resourceType
+                - paging
+                - data
+                additionalProperties: false
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  errors:
+                    description: One entry per problem encountered while handling the request
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          description: Human-readable explanation of the error
+                          type: string
+                        cause:
+                          description: Per-field validation failures, when the error is a validation error
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                description: Machine-readable validation code
+                                type: string
+                              expected:
+                                description: Value or type the field expected
+                                type: string
+                              message:
+                                description: Human-readable explanation for this field
+                                type: string
+                              path:
+                                description: Property path to the offending field, outermost segment first
+                                type: array
+                                items:
+                                  type: string
+                              received:
+                                description: Value the field actually received
+                                type: string
+                            required:
+                            - code
+                            - expected
+                            - message
+                            - path
+                            - received
+                            additionalProperties: false
+                      required:
+                      - message
+                      additionalProperties: false
+                required:
+                - errors
+                additionalProperties: false
+        '401':
+          description: '401'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    description: Human-readable explanation of the error
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '403':
+          description: '403'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    description: Human-readable explanation of the error
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '404':
+          description: '404'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    description: Human-readable explanation of the error
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+      security:
+      - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API_KEY
+      description: API Key authentication using Bearer token format
+security:
+- bearerAuth: []

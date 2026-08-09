@@ -1,0 +1,94 @@
+generated: '2026-08-09'
+method: derived
+source: openapi/ceros-public-api-openapi.yml, openapi/ceros-public-api-2026-02-25-openapi.yml, openapi/ceros-oembed-openapi.yml
+provider: Ceros
+api: Ceros Public API
+format: custom
+rfc9457: false
+rfc9457_note: >-
+  Ceros does NOT use RFC 9457 problem+json. Every documented error response is
+  `application/json` with a Ceros-specific envelope. There is no `type` URI, no `title`, no
+  `status` member and no machine-readable error code at the envelope level — only a
+  human-readable `message` per error, with an optional per-field `cause[]` on validation
+  failures.
+envelopes:
+- name: errors-array
+  description: The dominant envelope. Used for 400, 401 and 404 on every Public API operation.
+  media_type: application/json
+  shape:
+    errors:
+      type: array
+      description: One entry per problem encountered while handling the request
+      items:
+        message: Human-readable explanation of the error
+        cause:
+          type: array
+          description: Per-field validation failures, when the error is a validation error
+          items:
+            code: Machine-readable validation code
+            expected: Value or type the field expected
+            message: Human-readable explanation for this field
+            path: Property path to the offending field, outermost segment first (array of strings)
+            received: Value the field actually received
+  note: >-
+    `cause[].code` is the only machine-readable code anywhere in the surface, and it only appears
+    on validation failures — there is no catalog of these codes in the docs.
+- name: message-only
+  description: Used for 403 on the write operations, and by the live gateway for 401.
+  media_type: application/json
+  shape:
+    message: Human-readable explanation of the error
+  observed:
+  - url: https://rest.ceros.com/accounts/current-account
+    http_status: 401
+    body: '{"message":"UNAUTHORIZED"}'
+    note: >-
+      The live 401 uses the message-only envelope, NOT the errors[] envelope the spec documents
+      for 401. Spec and runtime disagree on the unauthenticated path.
+problem_types:
+- status: 400
+  title: Bad Request
+  envelope: errors-array
+  operations: [listFolderExperiences, getFolderTree, getCurrentAccount, getEmbedCodes, createPage, deletePage, duplicatePage, getAllExperiencePages, applyPageTemplate, batchUpdatePage, getCmlForSelector]
+  when: >-
+    Request validation failed. Documented triggers include `sort` not being one of the supported
+    values on listFolderExperiences.
+  remediation: Read `errors[].cause[]` — `path`, `expected` and `received` name the offending field.
+- status: 401
+  title: Unauthorized
+  envelope: errors-array (documented) / message-only (observed live)
+  operations: [getCurrentAccount, getEmbedCodes, getFolderTree, listFolderExperiences, createPage, deletePage, duplicatePage, getAllExperiencePages, applyPageTemplate, batchUpdatePage, getCmlForSelector]
+  when: The API key is missing or invalid.
+  remediation: 'Send `Authorization: Bearer <API_KEY>`; generate the key in Ceros account settings.'
+- status: 403
+  title: Forbidden
+  envelope: message-only
+  operations: [createPage, deletePage, duplicatePage, applyPageTemplate, batchUpdatePage]
+  when: Authenticated, but the caller may not perform this write on this resource.
+- status: 404
+  title: Not Found
+  envelope: errors-array
+  operations: [getEmbedCodes, getFolderTree, listFolderExperiences, createPage, deletePage, duplicatePage, getAllExperiencePages, applyPageTemplate, batchUpdatePage, getCmlForSelector]
+  when: >-
+    Documented per operation — the experience is deleted, unpublished, or (Legacy experiences only)
+    has never been published; the account does not exist or the caller has no access to it; the
+    folder does not exist or the caller cannot list its experiences.
+  remediation: Resolve the resource id first via getCurrentAccount then getFolderTree.
+oembed_errors:
+  api: Ceros oEmbed API
+  format: plain text / HTML, not JSON
+  entries:
+  - status: 400
+    body: Invalid Request
+    media_type: text/plain
+    when: '`url` is not a resolvable Ceros experience.'
+  - status: 404
+    when: '`url` query parameter omitted — falls through to the Ceros player 404 HTML page.'
+  - status: 501
+    when: '`format=xml` requested; only JSON is implemented.'
+  note: >-
+    The oEmbed surface shares no error envelope with the Public API. Errors here are not JSON at all.
+gaps:
+- No published error-code reference page anywhere on developers.ceros.com.
+- No `type` URI per problem, so errors cannot be linked to documentation programmatically.
+- No documented rate-limit (429) or server-error (5xx) response on any operation.

@@ -1,0 +1,2112 @@
+openapi: 3.1.0
+info:
+  title: Ceros Public API
+  version: 2026-02-25-12-00
+  description: Public API documentation for external integrations. Requires API key authentication.
+  contact:
+    name: Ceros Developer Docs
+    url: https://developers.ceros.com/
+  x-source: Reconstructed verbatim from the OpenAPI operation objects Ceros publishes in its own developer
+    documentation payloads at developers.ceros.com; Ceros does not serve a downloadable spec file.
+  x-evidence:
+    fetched: '2026-08-09'
+    docs_url: https://developers.ceros.com/api/public/2026-02-25-12-00/ceros-public-api
+    http_status: 200
+    api_host_probe:
+      url: https://rest.ceros.com/accounts/current-account
+      http_status: 401
+      body: '{"message":"UNAUTHORIZED"}'
+servers:
+- url: https://rest.ceros.com
+  description: Production server
+tags:
+- name: accounts
+- name: embedCodes
+- name: experience
+- name: experiencePage
+- name: folders
+paths:
+  /accounts/current-account:
+    get:
+      description: Get current account information using API key authentication
+      tags:
+      - accounts
+      parameters: []
+      operationId: getCurrentAccount
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  accountName:
+                    type: string
+                  accountResourceId:
+                    type: string
+                required:
+                - accountName
+                - accountResourceId
+                additionalProperties: false
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                        cause:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                              expected:
+                                type: string
+                              message:
+                                type: string
+                              path:
+                                type: array
+                                items:
+                                  type: string
+                              received:
+                                type: string
+                            required:
+                            - code
+                            - expected
+                            - message
+                            - path
+                            - received
+                            additionalProperties: false
+                      required:
+                      - message
+                      additionalProperties: false
+                required:
+                - errors
+                additionalProperties: false
+        '401':
+          description: '401'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                        cause:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                              expected:
+                                type: string
+                              message:
+                                type: string
+                              path:
+                                type: array
+                                items:
+                                  type: string
+                              received:
+                                type: string
+                            required:
+                            - code
+                            - expected
+                            - message
+                            - path
+                            - received
+                            additionalProperties: false
+                      required:
+                      - message
+                      additionalProperties: false
+                required:
+                - errors
+                additionalProperties: false
+      security:
+      - bearerAuth: []
+  /accounts/{accountResourceId}/folder-tree:
+    get:
+      tags:
+      - folders
+      parameters:
+      - name: accountResourceId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: expand
+        in: query
+        content:
+          application/json:
+            schema:
+              type: string
+      - name: folder
+        in: query
+        content:
+          application/json:
+            schema:
+              type: string
+      - name: depth
+        in: query
+        required: true
+        content:
+          application/json:
+            schema:
+              default: 2
+              type: integer
+              minimum: 0
+              maximum: 9007199254740991
+      operationId: getFolderTree
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                TypeId: 801a8de1-d3e2-4225-b2c5-e3fcf9955183
+                type: object
+                properties:
+                  resources:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        self:
+                          type: string
+                        resourceType:
+                          type: string
+                          const: folder
+                        resourceId:
+                          type: string
+                        legacyId: {}
+                        accountLegacyId: {}
+                        accountResourceId:
+                          type: string
+                        accountSlug:
+                          type: string
+                        createdByMemberId: {}
+                        createdByMemberName:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        creationDate:
+                          type: string
+                          format: date-time
+                          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                        deletionDate:
+                          anyOf:
+                          - type: string
+                            format: date-time
+                            pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                          - type: 'null'
+                        parentResourceId:
+                          type: string
+                        parentLegacyId: {}
+                        parentSlug:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        parentName:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        isAncestorDeleted:
+                          type: boolean
+                        lastModifiedByMemberId: {}
+                        lastModifiedByMemberName:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        lastModifiedDate:
+                          type: string
+                          format: date-time
+                          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                        slug:
+                          type: string
+                        status:
+                          type: string
+                        thumbnailUrl:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        name:
+                          type: string
+                        isFlexFolder:
+                          type: boolean
+                        ancestors:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              resourceId:
+                                type: string
+                              legacyId: {}
+                              name:
+                                type: string
+                              slug:
+                                type: string
+                            required:
+                            - resourceId
+                            - legacyId
+                            - name
+                            - slug
+                            additionalProperties: false
+                        thumbnails:
+                          type: object
+                          propertyNames:
+                            type: string
+                          additionalProperties:
+                            type: object
+                            properties:
+                              url:
+                                type: string
+                              isFlexExperience:
+                                type: boolean
+                            required:
+                            - url
+                            - isFlexExperience
+                            additionalProperties: false
+                        updatedBy:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              folderResourceId:
+                                type: string
+                              folderLegacyId:
+                                type: string
+                              memberLegacyId: {}
+                              memberResourceId:
+                                type: string
+                              memberName:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              timestamp:
+                                type: string
+                                format: date-time
+                                pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                            required:
+                            - folderResourceId
+                            - folderLegacyId
+                            - memberLegacyId
+                            - memberResourceId
+                            - memberName
+                            - timestamp
+                            additionalProperties: false
+                        legacyExperienceCount:
+                          type: number
+                        flexExperienceCount:
+                          type: number
+                        experiences:
+                          type: object
+                          properties:
+                            count:
+                              type: number
+                            self:
+                              type: string
+                            resources:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  resourceId:
+                                    type: string
+                                  legacyId: {}
+                                  name:
+                                    type: string
+                                  slug:
+                                    type: string
+                                  status:
+                                    type: string
+                                    enum:
+                                    - published
+                                    - draft
+                                    - deleted
+                                    - unpublished
+                                  thumbnailUrl:
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                  isFlexExperience:
+                                    type: boolean
+                                  primaryAliasSlug:
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                  lastModifiedDate:
+                                    anyOf:
+                                    - type: string
+                                      format: date-time
+                                      pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                                    - type: 'null'
+                                  lastModifiedByMemberResourceId:
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                  lastModifiedByMemberName:
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                  publishHistory:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        memberResourceId:
+                                          type: string
+                                        memberName:
+                                          type: string
+                                        status:
+                                          type: string
+                                        timestamp:
+                                          type: string
+                                          format: date-time
+                                          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                                      required:
+                                      - memberResourceId
+                                      - memberName
+                                      - status
+                                      - timestamp
+                                      additionalProperties: false
+                                  ancestors:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        resourceId:
+                                          type: string
+                                        legacyId: {}
+                                        name:
+                                          type: string
+                                        slug:
+                                          type: string
+                                      required:
+                                      - resourceId
+                                      - legacyId
+                                      - name
+                                      - slug
+                                      additionalProperties: false
+                                required:
+                                - resourceId
+                                - legacyId
+                                - name
+                                - slug
+                                - status
+                                - thumbnailUrl
+                                - isFlexExperience
+                                - primaryAliasSlug
+                                - lastModifiedDate
+                                - lastModifiedByMemberResourceId
+                                - lastModifiedByMemberName
+                                - publishHistory
+                                - ancestors
+                                additionalProperties: false
+                          required:
+                          - count
+                          - self
+                          - resources
+                          additionalProperties: false
+                        members:
+                          type: object
+                          properties:
+                            count:
+                              type: number
+                            self:
+                              type: string
+                            resources:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id: {}
+                                  memberId: {}
+                                  memberName:
+                                    anyOf:
+                                    - type: string
+                                    - type: 'null'
+                                  role:
+                                    type: string
+                                  joinDate:
+                                    type: string
+                                    format: date-time
+                                    pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                                required:
+                                - id
+                                - memberId
+                                - memberName
+                                - role
+                                - joinDate
+                                additionalProperties: false
+                          required:
+                          - count
+                          - self
+                          additionalProperties: false
+                        children:
+                          type: array
+                          items: circular(Def0___schema0)
+                      required:
+                      - self
+                      - resourceId
+                      - legacyId
+                      - deletionDate
+                      - parentLegacyId
+                      - name
+                      additionalProperties: false
+                      title: Def0___schema0
+                  count:
+                    type: number
+                  resourceType:
+                    type: string
+                    const: folder
+                required:
+                - resources
+                - count
+                - resourceType
+                additionalProperties: false
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                        cause:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                              expected:
+                                type: string
+                              message:
+                                type: string
+                              path:
+                                type: array
+                                items:
+                                  type: string
+                              received:
+                                type: string
+                            required:
+                            - code
+                            - expected
+                            - message
+                            - path
+                            - received
+                            additionalProperties: false
+                      required:
+                      - message
+                      additionalProperties: false
+                required:
+                - errors
+                additionalProperties: false
+        '404':
+          description: '404'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                        cause:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                              expected:
+                                type: string
+                              message:
+                                type: string
+                              path:
+                                type: array
+                                items:
+                                  type: string
+                              received:
+                                type: string
+                            required:
+                            - code
+                            - expected
+                            - message
+                            - path
+                            - received
+                            additionalProperties: false
+                      required:
+                      - message
+                      additionalProperties: false
+                required:
+                - errors
+                additionalProperties: false
+      description: getFolderTree
+      security:
+      - bearerAuth: []
+  /experiences/{experienceResourceId}/embed-codes:
+    get:
+      tags:
+      - embedCodes
+      parameters:
+      - name: experienceResourceId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: isExport
+        in: query
+        required: true
+        content:
+          application/json:
+            schema:
+              default: false
+              type: boolean
+      operationId: getEmbedCodes
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  viewUrl:
+                    type: string
+                  assetBaseUrl:
+                    type: string
+                  title:
+                    type: string
+                  experienceAlias:
+                    type: string
+                  isPageOverHeightHomogeneous:
+                    type: boolean
+                  fullHeightEmbedCode:
+                    type: string
+                  scrollableEmbedCode:
+                    type: string
+                  inlineEmbedCode:
+                    type: string
+                required:
+                - viewUrl
+                - assetBaseUrl
+                - title
+                - experienceAlias
+                - isPageOverHeightHomogeneous
+                additionalProperties: false
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                        cause:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                              expected:
+                                type: string
+                              message:
+                                type: string
+                              path:
+                                type: array
+                                items:
+                                  type: string
+                              received:
+                                type: string
+                            required:
+                            - code
+                            - expected
+                            - message
+                            - path
+                            - received
+                            additionalProperties: false
+                      required:
+                      - message
+                      additionalProperties: false
+                required:
+                - errors
+                additionalProperties: false
+      description: getEmbedCodes
+      security:
+      - bearerAuth: []
+  /experiences/{experienceResourceId}/pages:
+    get:
+      tags:
+      - experiencePage
+      parameters:
+      - name: experienceResourceId
+        in: path
+        required: true
+        schema:
+          type: string
+      operationId: getAllExperiencePages
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        pageId:
+                          type: string
+                        slug:
+                          type: string
+                        label:
+                          type: string
+                      required:
+                      - pageId
+                      - slug
+                      - label
+                      additionalProperties: false
+                required:
+                - data
+                additionalProperties: false
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                        cause:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                              expected:
+                                type: string
+                              message:
+                                type: string
+                              path:
+                                type: array
+                                items:
+                                  type: string
+                              received:
+                                type: string
+                            required:
+                            - code
+                            - expected
+                            - message
+                            - path
+                            - received
+                            additionalProperties: false
+                      required:
+                      - message
+                      additionalProperties: false
+                required:
+                - errors
+                additionalProperties: false
+        '401':
+          description: '401'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '403':
+          description: '403'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '404':
+          description: '404'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+      description: getAllExperiencePages
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - experiencePage
+      parameters:
+      - name: experienceResourceId
+        in: path
+        required: true
+        schema:
+          type: string
+      operationId: createPage
+      requestBody:
+        description: Body
+        content:
+          application/json:
+            schema:
+              $schema: https://json-schema.org/draft/2020-12/schema
+              type: object
+              properties:
+                slug:
+                  type: string
+                title:
+                  type: string
+                afterPageId:
+                  type: string
+                currentPageId:
+                  type: string
+                width:
+                  type: string
+                height:
+                  type: string
+                minHeight:
+                  type: string
+                sourceBreakpoints:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      breakpoint:
+                        type: object
+                        propertyNames:
+                          type: string
+                        additionalProperties:
+                          type: string
+                      variant:
+                        type: object
+                        propertyNames:
+                          type: string
+                        additionalProperties:
+                          type: string
+                    required:
+                    - breakpoint
+                    additionalProperties: false
+                templateId:
+                  type: string
+              required:
+              - title
+              additionalProperties: false
+      responses:
+        '201':
+          description: '201'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  pageId:
+                    type: string
+                  slug:
+                    type: string
+                  label:
+                    type: string
+                required:
+                - pageId
+                - slug
+                - label
+                additionalProperties: false
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                        cause:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                              expected:
+                                type: string
+                              message:
+                                type: string
+                              path:
+                                type: array
+                                items:
+                                  type: string
+                              received:
+                                type: string
+                            required:
+                            - code
+                            - expected
+                            - message
+                            - path
+                            - received
+                            additionalProperties: false
+                      required:
+                      - message
+                      additionalProperties: false
+                required:
+                - errors
+                additionalProperties: false
+        '401':
+          description: '401'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '403':
+          description: '403'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '404':
+          description: '404'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+      description: createPage
+      security:
+      - bearerAuth: []
+      jsonRequestBodyExample:
+        slug: string
+        title: string
+        afterPageId: string
+        currentPageId: string
+        width: string
+        height: string
+        minHeight: string
+        sourceBreakpoints:
+        - breakpoint: {}
+          variant: {}
+        templateId: string
+  /experiences/{experienceResourceId}/pages/{pageId}:
+    delete:
+      tags:
+      - experiencePage
+      parameters:
+      - name: experienceResourceId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: pageId
+        in: path
+        required: true
+        schema:
+          type: string
+      operationId: deletePage
+      responses:
+        '204':
+          description: '204'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties: {}
+                additionalProperties: false
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                        cause:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                              expected:
+                                type: string
+                              message:
+                                type: string
+                              path:
+                                type: array
+                                items:
+                                  type: string
+                              received:
+                                type: string
+                            required:
+                            - code
+                            - expected
+                            - message
+                            - path
+                            - received
+                            additionalProperties: false
+                      required:
+                      - message
+                      additionalProperties: false
+                required:
+                - errors
+                additionalProperties: false
+        '401':
+          description: '401'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '403':
+          description: '403'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '404':
+          description: '404'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+      description: deletePage
+      security:
+      - bearerAuth: []
+  /experiences/{experienceResourceId}/pages/{pageId}/apply-template:
+    post:
+      tags:
+      - experiencePage
+      parameters:
+      - name: experienceResourceId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: pageId
+        in: path
+        required: true
+        schema:
+          type: string
+      operationId: applyPageTemplate
+      requestBody:
+        description: Body
+        content:
+          application/json:
+            schema:
+              $schema: https://json-schema.org/draft/2020-12/schema
+              type: object
+              properties:
+                templateId:
+                  type: string
+                sourceBreakpoints:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      breakpoint:
+                        type: object
+                        propertyNames:
+                          type: string
+                        additionalProperties:
+                          type: string
+                      variant:
+                        type: object
+                        propertyNames:
+                          type: string
+                        additionalProperties:
+                          type: string
+                    required:
+                    - breakpoint
+                    additionalProperties: false
+              required:
+              - templateId
+              additionalProperties: false
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  pageId:
+                    type: string
+                  slug:
+                    type: string
+                  label:
+                    type: string
+                required:
+                - pageId
+                - slug
+                - label
+                additionalProperties: false
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                        cause:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                              expected:
+                                type: string
+                              message:
+                                type: string
+                              path:
+                                type: array
+                                items:
+                                  type: string
+                              received:
+                                type: string
+                            required:
+                            - code
+                            - expected
+                            - message
+                            - path
+                            - received
+                            additionalProperties: false
+                      required:
+                      - message
+                      additionalProperties: false
+                required:
+                - errors
+                additionalProperties: false
+        '401':
+          description: '401'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '403':
+          description: '403'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '404':
+          description: '404'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+      description: applyPageTemplate
+      security:
+      - bearerAuth: []
+      jsonRequestBodyExample:
+        templateId: string
+        sourceBreakpoints:
+        - breakpoint: {}
+          variant: {}
+  /experiences/{experienceResourceId}/pages/{pageId}/batch-update:
+    post:
+      tags:
+      - experiencePage
+      parameters:
+      - name: experienceResourceId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: pageId
+        in: path
+        required: true
+        schema:
+          type: string
+      operationId: batchUpdatePage
+      requestBody:
+        description: Body
+        content:
+          application/json:
+            schema:
+              $schema: https://json-schema.org/draft/2020-12/schema
+              type: object
+              properties:
+                updates:
+                  minItems: 1
+                  maxItems: 10
+                  type: array
+                  items:
+                    anyOf:
+                    - type: object
+                      properties:
+                        operation:
+                          type: string
+                          const: update_existing_cml_element
+                        elementId:
+                          type: string
+                          minLength: 1
+                        propertiesToUpdate:
+                          minItems: 1
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                minLength: 1
+                              value:
+                                type: string
+                            required:
+                            - name
+                            - value
+                            additionalProperties: false
+                      required:
+                      - operation
+                      - elementId
+                      - propertiesToUpdate
+                      additionalProperties: false
+                    - type: object
+                      properties:
+                        operation:
+                          type: string
+                          const: set_inner_html_content
+                        elementId:
+                          type: string
+                          minLength: 1
+                        innerHTML:
+                          type: string
+                      required:
+                      - operation
+                      - elementId
+                      - innerHTML
+                      additionalProperties: false
+                    - type: object
+                      properties:
+                        operation:
+                          type: string
+                          const: add_cml
+                        cml:
+                          type: string
+                          minLength: 1
+                        label:
+                          type: string
+                        parentId:
+                          type: string
+                      required:
+                      - operation
+                      - cml
+                      additionalProperties: false
+                    - type: object
+                      properties:
+                        operation:
+                          type: string
+                          const: append_cml
+                        cml:
+                          type: string
+                          minLength: 1
+                        label:
+                          type: string
+                        elementId:
+                          type: string
+                          minLength: 1
+                        placement:
+                          type: string
+                          enum:
+                          - before
+                          - after
+                      required:
+                      - operation
+                      - cml
+                      - elementId
+                      - placement
+                      additionalProperties: false
+                    - type: object
+                      properties:
+                        operation:
+                          type: string
+                          const: move_cml_element
+                        elementId:
+                          type: string
+                          minLength: 1
+                        targetElementId:
+                          type: string
+                          minLength: 1
+                        placement:
+                          type: string
+                          enum:
+                          - before
+                          - after
+                          - child
+                      required:
+                      - operation
+                      - elementId
+                      - targetElementId
+                      - placement
+                      additionalProperties: false
+                    - type: object
+                      properties:
+                        operation:
+                          type: string
+                          const: delete_cml_element
+                        elementId:
+                          type: string
+                          minLength: 1
+                      required:
+                      - operation
+                      - elementId
+                      additionalProperties: false
+              required:
+              - updates
+              additionalProperties: false
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  hasErrors:
+                    type: boolean
+                  rolledBack:
+                    type: boolean
+                  results:
+                    type: array
+                    items:
+                      anyOf:
+                      - type: object
+                        properties:
+                          error:
+                            type: boolean
+                            const: false
+                          index:
+                            type: integer
+                            minimum: 0
+                            maximum: 9007199254740991
+                          updatedCmlIds:
+                            default: []
+                            type: array
+                            items:
+                              type: string
+                        required:
+                        - error
+                        - index
+                        - updatedCmlIds
+                        additionalProperties: false
+                      - type: object
+                        properties:
+                          error:
+                            type: boolean
+                            const: true
+                          index:
+                            type: integer
+                            minimum: 0
+                            maximum: 9007199254740991
+                          errorCode:
+                            type: string
+                            enum:
+                            - element_not_found
+                            - parent_not_found
+                            - invalid_cml
+                            - invalid_attribute
+                            - unsupported_operation
+                            - conflict_in_batch
+                            - unknown_error
+                          errorMessage:
+                            type: string
+                            minLength: 1
+                          updatedCmlIds:
+                            default: []
+                            type: array
+                            items:
+                              type: string
+                        required:
+                        - error
+                        - index
+                        - errorCode
+                        - errorMessage
+                        - updatedCmlIds
+                        additionalProperties: false
+                required:
+                - hasErrors
+                - rolledBack
+                - results
+                additionalProperties: false
+        '400':
+          description: '400'
+        '401':
+          description: '401'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '403':
+          description: '403'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '404':
+          description: '404'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+      description: batchUpdatePage
+      security:
+      - bearerAuth: []
+      jsonRequestBodyExample:
+        updates:
+        - operation: update_existing_cml_element
+          elementId: string
+          propertiesToUpdate:
+          - name: string
+            value: string
+        - operation: set_inner_html_content
+          elementId: string
+          innerHTML: string
+        - operation: add_cml
+          cml: string
+          label: string
+          parentId: string
+        - operation: append_cml
+          cml: string
+          label: string
+          elementId: string
+          placement: before
+        - operation: move_cml_element
+          elementId: string
+          targetElementId: string
+          placement: before
+        - operation: delete_cml_element
+          elementId: string
+  /experiences/{experienceResourceId}/pages/{pageId}/cml-for-selector:
+    get:
+      tags:
+      - experiencePage
+      parameters:
+      - name: experienceResourceId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: pageId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: selector
+        in: query
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              minLength: 1
+      operationId: getCmlForSelector
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  cml:
+                    type: array
+                    items:
+                      type: string
+                required:
+                - cml
+                additionalProperties: false
+        '400':
+          description: '400'
+        '401':
+          description: '401'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '403':
+          description: '403'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '404':
+          description: '404'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+      description: getCmlForSelector
+      security:
+      - bearerAuth: []
+  /experiences/{experienceResourceId}/pages/{pageId}/duplicate:
+    post:
+      tags:
+      - experiencePage
+      parameters:
+      - name: experienceResourceId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: pageId
+        in: path
+        required: true
+        schema:
+          type: string
+      operationId: duplicatePage
+      requestBody:
+        description: Body
+        content:
+          application/json:
+            schema:
+              $schema: https://json-schema.org/draft/2020-12/schema
+              type: object
+              properties:
+                newSlug:
+                  type: string
+                newTitle:
+                  type: string
+              required:
+              - newSlug
+              - newTitle
+              additionalProperties: false
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  pageId:
+                    type: string
+                  slug:
+                    type: string
+                  label:
+                    type: string
+                required:
+                - pageId
+                - slug
+                - label
+                additionalProperties: false
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                        cause:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                              expected:
+                                type: string
+                              message:
+                                type: string
+                              path:
+                                type: array
+                                items:
+                                  type: string
+                              received:
+                                type: string
+                            required:
+                            - code
+                            - expected
+                            - message
+                            - path
+                            - received
+                            additionalProperties: false
+                      required:
+                      - message
+                      additionalProperties: false
+                required:
+                - errors
+                additionalProperties: false
+        '401':
+          description: '401'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '403':
+          description: '403'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '404':
+          description: '404'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+      description: duplicatePage
+      security:
+      - bearerAuth: []
+      jsonRequestBodyExample:
+        newSlug: string
+        newTitle: string
+  /folder/{folderResourceId}/experiences:
+    get:
+      tags:
+      - experience
+      parameters:
+      - name: folderResourceId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        content:
+          application/json:
+            schema:
+              type: number
+      - name: pageSize
+        in: query
+        content:
+          application/json:
+            schema:
+              type: number
+      - name: search
+        in: query
+        content:
+          application/json:
+            schema:
+              type: string
+      - name: sort
+        in: query
+        content:
+          application/json:
+            schema:
+              type: string
+      - name: offset
+        in: query
+        content:
+          application/json:
+            schema:
+              type: number
+      operationId: listFolderExperiences
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  self:
+                    type: string
+                  resourceType:
+                    type: string
+                  paging:
+                    type: object
+                    properties:
+                      total:
+                        type: number
+                      page:
+                        type: number
+                      pages:
+                        type: number
+                      pageSize:
+                        type: number
+                      previous:
+                        type: string
+                      next:
+                        type: string
+                    required:
+                    - total
+                    - page
+                    - pages
+                    - pageSize
+                    additionalProperties: false
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        legacyId: {}
+                        name:
+                          type: string
+                        slug:
+                          type: string
+                        resourceId:
+                          type: string
+                        experienceAlias:
+                          type: string
+                        folderResourceId:
+                          type: string
+                        creationDate:
+                          type: string
+                          format: date-time
+                          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                        status:
+                          type: string
+                          enum:
+                          - published
+                          - draft
+                          - deleted
+                          - unpublished
+                        lastModifiedDate:
+                          type: string
+                          format: date-time
+                          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                        firstPublishedDate:
+                          type: string
+                          format: date-time
+                          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                        lastPublishedDate:
+                          type: string
+                          format: date-time
+                          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                        isFlexExperience:
+                          type: boolean
+                        isPasswordProtected:
+                          type: boolean
+                        isSSOProtected:
+                          type: boolean
+                        isTemplate:
+                          type: boolean
+                        thumbnailUrl:
+                          type: string
+                        createdByMemberId:
+                          type: number
+                        templateThumbnailUrl:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        importLinkShared:
+                          type: boolean
+                        isShowcaseExperience:
+                          type: boolean
+                        partner:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        partnerResourceId:
+                          anyOf:
+                          - type: object
+                            properties:
+                              resourceId:
+                                type: string
+                              tenant:
+                                type: string
+                              teamsiteId:
+                                type: string
+                            required:
+                            - resourceId
+                            - tenant
+                            additionalProperties: false
+                          - type: 'null'
+                        wipDocVersion:
+                          type: object
+                          properties:
+                            adminEditable:
+                              type: boolean
+                            textComponentType:
+                              type: string
+                              enum:
+                              - old_text
+                              - text_plus
+                            editorPublishingDisabled:
+                              type: boolean
+                          required:
+                          - adminEditable
+                          - textComponentType
+                          - editorPublishingDisabled
+                          additionalProperties: false
+                        publishedDocVersion:
+                          type: object
+                          properties:
+                            slug:
+                              type: string
+                          required:
+                          - slug
+                          additionalProperties: false
+                        updatedBy:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              memberId:
+                                type: number
+                              memberName:
+                                type: string
+                              timestamp:
+                                type: string
+                            required:
+                            - memberId
+                            - memberName
+                            - timestamp
+                            additionalProperties: false
+                        publishHistory:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              memberId:
+                                type: number
+                              memberName:
+                                type: string
+                              status:
+                                type: string
+                                enum:
+                                - published
+                                - unpublished
+                              timestamp:
+                                type: string
+                            required:
+                            - memberId
+                            - memberName
+                            - status
+                            - timestamp
+                            additionalProperties: false
+                      required:
+                      - legacyId
+                      - resourceId
+                      - experienceAlias
+                      - folderResourceId
+                      - creationDate
+                      - status
+                      - isFlexExperience
+                      - isPasswordProtected
+                      - isSSOProtected
+                      - isTemplate
+                      - createdByMemberId
+                      - templateThumbnailUrl
+                      - importLinkShared
+                      - isShowcaseExperience
+                      - partner
+                      - partnerResourceId
+                      - updatedBy
+                      - publishHistory
+                      additionalProperties: false
+                required:
+                - self
+                - resourceType
+                - paging
+                - data
+                additionalProperties: false
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                        cause:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                              expected:
+                                type: string
+                              message:
+                                type: string
+                              path:
+                                type: array
+                                items:
+                                  type: string
+                              received:
+                                type: string
+                            required:
+                            - code
+                            - expected
+                            - message
+                            - path
+                            - received
+                            additionalProperties: false
+                      required:
+                      - message
+                      additionalProperties: false
+                required:
+                - errors
+                additionalProperties: false
+        '401':
+          description: '401'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '403':
+          description: '403'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '404':
+          description: '404'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+      description: listFolderExperiences
+      security:
+      - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API_KEY
+      description: API Key authentication using Bearer token format
+security:
+- bearerAuth: []

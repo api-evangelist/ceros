@@ -1,0 +1,80 @@
+generated: '2026-08-09'
+method: searched
+source: https://developers.ceros.com/api/public/ceros-public-api
+provider: Ceros
+summary: >-
+  Ceros publishes no dated changelog or release-notes page for its Public API. The only version
+  history it exposes is the version selector on the API reference, which lists four dated
+  snapshots and lets you diff them by reading each version's operation list. Its one genuinely
+  dated, Keep-a-Changelog changelog is for the AEM connector, in that repository.
+api_changelog:
+  published: false
+  substitute: version selector on https://developers.ceros.com/api/public/ceros-public-api
+  scheme: dated snapshot (YYYY-MM-DD-HH-MM)
+  current_version: 2026-05-28-09-00
+  entries:
+  - version: 2026-05-28-09-00
+    date: '2026-05-28'
+    current: true
+    operations: 4
+    breaking: true
+    highlights:
+    - Surface reduced to four read-only GETs — getCurrentAccount, getEmbedCodes, getFolderTree, listFolderExperiences.
+    - Every write operation and getAllExperiencePages/getCmlForSelector removed from the reference.
+    note: >-
+      Derived by diffing the published reference between versions; Ceros publishes no note
+      explaining the change.
+  - version: 2026-02-25-12-00
+    date: '2026-02-25'
+    operations: 11
+    breaking: false
+    additions:
+    - applyPageTemplate (POST /experiences/{experienceResourceId}/pages/{pageId}/apply-template)
+    - batchUpdatePage (POST /experiences/{experienceResourceId}/pages/{pageId}/batch-update)
+    - getCmlForSelector (GET /experiences/{experienceResourceId}/pages/{pageId}/cml-for-selector)
+  - version: 2026-02-17-08-00
+    date: '2026-02-17'
+    operations: 8
+    breaking: false
+    highlights:
+    - Same eight operations as the first published version; descriptions revised.
+  - version: 2025-12-10-09-11
+    date: '2025-12-10'
+    operations: 8
+    highlights:
+    - First published version — accounts, embed codes, folder tree, folder experiences, and full page CRUD.
+component_changelogs:
+- component: Ceros AEM Connector
+  url: https://github.com/ceros/ceros-aem-connector/blob/main/CHANGELOG.md
+  format: Keep a Changelog 1.1.0 + SemVer
+  current_version: 1.0.2
+  entries:
+  - version: 1.0.2
+    date: '2026-08-07'
+    added: [Configurable height for embedded Ceros experiences]
+  - version: 1.0.1
+    date: '2026-07-01'
+    fixed: [Brand kit fonts and colours now applied in the server-side Always Fetch, Store and HTML Import modes]
+  - version: 1.0.0
+    date: '2026-06-30'
+    fixed: ['Deleting a Ceros Flex component no longer fails with "Paragraph delete operation failed"']
+  - version: 0.0.8
+    date: '2026-06-26'
+    security:
+    - >-
+      Pasted experience URLs are no longer trusted by default. A manifest is fetched, and its
+      scripts injected, only when served from a Ceros-owned domain (ceros.site by default);
+      vanity domains are resolved via a new x-flex-manifest response header, and a spoofed header
+      pointing off-Ceros is rejected.
+    - New OSGi config cerosOwnedDomains and allowUntrustedManifestHost; production-safe defaults only.
+    removed: [Unused mediaCdnBaseUrl OSGi property]
+  - version: 0.0.7
+    date: '2026-06-18'
+    fixed: [HTML Import now uploads every file in the export archive, not only manifest-referenced assets]
+  - version: 0.0.5
+    date: '2026-06-17'
+    added: [HTML-import delivery mode — upload a Ceros .tar.gz export and serve it fully offline from the DAM]
+gaps:
+- No changelog, release notes or "what's new" page for the Public API.
+- No RSS/Atom feed or machine-readable feed for any changelog.
+- The one breaking change visible in the version history (the 2026-05-28 write-surface removal) carries no note.

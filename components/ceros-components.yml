@@ -1,0 +1,122 @@
+generated: '2026-08-09'
+method: searched
+source: https://developers.ceros.com/flex-experience-sdk
+docs:
+- https://developers.ceros.com/flex-experience-sdk/getting-started
+- https://developers.ceros.com/flex-experience-sdk/delivery-modes
+- https://developers.ceros.com/flex-experience-sdk/reference/capabilities
+- https://developers.ceros.com/plugins
+provider: Ceros
+summary: >-
+  Ceros's real developer surface is client-side, not server-side. The Flex Experience SDK is a
+  browser ES module that reaches into a published experience's rendered components; the embed
+  surface is an iframe + scroll-proxy pair resolvable via oEmbed; and the CMS connectors package
+  the same embed for AEM, Contentful and Optimizely. All of it is distinct from the four-operation
+  REST API.
+families:
+- family: Flex Experience SDK
+  kind: browser ES module
+  loader:
+    ceros_hosted: "import { connect } from '@ceros/flex-experience-sdk'"
+    own_page: "import { connect } from 'https://assets.ceros.site/js/flex-experience-sdk.js'"
+  cdn: https://assets.ceros.site/js/flex-experience-sdk.js
+  entry_points:
+  - name: connect
+    signature: connect(experienceRoot?, options?)
+    returns: Promise resolving to a Component handle once the experience is ready
+  - name: wrap
+    signature: wrap(element)
+    note: Skips the readiness check; wraps an experience element directly.
+  - name: SDK_VERSION
+    note: Exported version constant.
+  lookup:
+  - findByLocator()
+  - findByTag()
+  capabilities:
+  - namespace: text
+    methods: [setText(text), getText()]
+  - namespace: media
+    methods: ['play()', 'pause()']
+  - namespace: states
+    methods: ['activate(name)', 'deactivate(name)', 'toggle(name)', 'list()', 'current()']
+  - namespace: visibility
+    methods: ['show()', 'hide()', 'isHidden()']
+  - namespace: pages
+    methods: ['list()', 'current()', 'goTo(page)', 'next()', 'previous()']
+  delivery_modes:
+  - name: Standalone / iframe player
+    note: Experience runs at its published URL or in an iframe; Ceros renders custom head/body HTML; navigation is a full page load. Bare-specifier import via Ceros's import map.
+  - name: Flex SSR
+    note: Server-rendered and hydrated into your own page markup; you supply analytics, fonts and meta tags; absolute CDN import.
+  - name: Flex Inline
+    note: Renders in a shadow root on a `<div data-flex-inline>` container; in-place page swaps require reconnecting on `flex.page.change`; absolute CDN import.
+  limits:
+  - Runtime-only — changes do not persist across reload.
+  - Published experiences only; does not run in the Flex editor.
+  - Lookups do not wait and do not stay live; components found earlier are not updated when new content appears.
+  - Not attached to `window.flexSdk`.
+  - Cannot add or remove components.
+  - Requires a 2023-or-later browser (Chrome/Edge 89+, Safari 16.4+, Firefox 108+).
+  reference: https://developers.ceros.com/flex-experience-sdk/limits
+- family: Embed surface
+  kind: hosted embed markup
+  produced_by:
+  - operation: getEmbedCodes
+    api: Ceros Public API
+    note: Returns embed snippets plus the URLs they are served from. Flex experiences always return full-height, scrollable and inline snippets and are available before publishing; Legacy experiences must be published and return only the variants their layout supports.
+  - endpoint: https://view.ceros.com/oembed
+    note: oEmbed 1.0 provider returning the same responsive embed markup for a public experience URL.
+  parts:
+  - name: aspect-ratio wrapper div
+    note: 'Inline style with padding-bottom percentage and data-aspectRatio.'
+  - name: iframe.ceros-experience
+    note: Points at the published experience URL with a heightOverride query parameter.
+  - name: scroll-proxy.min.js
+    url: https://view.ceros.com/scroll-proxy.min.js
+    note: Cross-frame scroll proxy, configured with data-ceros-origin-domains.
+  export_mode:
+    note: 'getEmbedCodes accepts `isExport=true` to rewrite viewUrl and assetBaseUrl as paths relative to a self-hosted HTML export. Legacy experiences only.'
+- family: CMS connectors
+  kind: host-platform components
+  items:
+  - name: Ceros AEM Connector
+    platform: Adobe Experience Manager
+    component: Ceros Flex component (OSGi bundle + content package)
+    delivery_modes: [Fetch, Store, HTML Import, Inline, Embed]
+    docs: https://developers.ceros.com/plugins/aem-connector
+    repository: https://github.com/ceros/ceros-aem-connector
+    note: With a Flex API key configured, authors can browse the account folder tree and pick an experience instead of pasting a URL — the connector's own use of the Public API.
+  - name: Ceros Contentful App
+    platform: Contentful
+    component: Config screen + entry editor (App Framework)
+    repository: https://github.com/ceros/ceros-contentful-app
+    note: Resolves a pasted experience URL through the Ceros oEmbed endpoint and stores title, canonical URL and embed HTML on the entry.
+  - name: Ceros Optimizely CMS plugin
+    platform: Optimizely CMS
+    repository: https://github.com/ceros/ceros-optimizely-cms-plugin
+    note: No README or tagged release; last pushed 2024-02-01.
+  - name: Ceros WordPress plugin
+    platform: WordPress
+    repository: https://github.com/ceros/ceros-plugin-wordpress
+    status: referenced-not-public
+    note: Named in the AEM connector's 0.0.8 changelog entry ("Mirrors the WordPress connector's keyless paste hardening"); the repository is not publicly readable.
+- family: Experience plugins
+  kind: scripts injected into experiences
+  repository: https://github.com/ceros/ceros-plugins
+  items:
+  - name: eloqua
+    note: Oracle Eloqua tracking.
+  - name: marketo-munchkin
+    note: Marketo Munchkin tracking.
+  - name: soundjs
+    note: SoundJS audio support.
+  - name: highlander
+    note: Single-instance helper.
+- family: MarkUp SDK
+  kind: browser SDK
+  status: release-candidate
+  packages: ['@ceros-dev/markup-sdk', '@ceros-dev/markup-sdk-core']
+  note: >-
+    Embeds MarkUp commenting and collaboration into a host page. Published to npm 2026-07-23 at
+    1.0.0-rc.1; the source repo github.com/ceros/ceros-markup is not public and there is no
+    documentation for it on developers.ceros.com.

@@ -1,0 +1,15 @@
+generated: '2026-08-09'
+method: derived
+source: openapi/ceros-public-api-2026-02-25-openapi.yml, openapi/ceros-public-api-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: API_KEY
+  description: API Key authentication using Bearer token format
+  sources:
+  - openapi/ceros-public-api-2026-02-25-openapi.yml
+  - openapi/ceros-public-api-openapi.yml

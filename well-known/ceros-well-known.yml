@@ -1,0 +1,125 @@
+generated: '2026-08-09'
+method: probed
+source: Direct HTTP probes of every Ceros-operated host, 2026-08-09
+provider: Ceros
+summary: >-
+  Ceros publishes no first-party /.well-known/ documents on any host it operates. The two 200s
+  below both come from educate.ceros.com, which is an Intercom-hosted help centre on a Ceros
+  CNAME — the security.txt is Intercom's own policy (its Canonical points at app.intercom.com)
+  and the llms.txt is Intercom's two-line help-centre boilerplate. Neither describes Ceros's
+  own API surface or Ceros's own vulnerability-disclosure programme, so neither is wired as a
+  Ceros SecurityTxt pointer.
+hosts:
+- host: rest.ceros.com
+  role: Public API production host
+  probes:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  note: >-
+    Host is live and answers with a real JSON 404 envelope ({"message":"Cannot GET /..."}), so
+    these are genuine misses, not an SPA catch-all.
+- host: developers.ceros.com
+  role: Developer documentation (Docusaurus)
+  probes:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+  - path: /robots.txt
+    status: 404
+  - path: /sitemap.xml
+    status: 200
+    file: null
+    note: 56 URLs; this is what surfaced the Public API reference.
+- host: www.ceros.com
+  role: Marketing site (Next.js)
+  probes:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+  - path: /robots.txt
+    status: 200
+  - path: /sitemap.xml
+    status: 200
+- host: view.ceros.com
+  role: Experience delivery / player + oEmbed provider
+  probes:
+  - path: /oembed
+    status: 200
+    note: Real oEmbed 1.0 endpoint; captured in openapi/ceros-oembed-openapi.yml
+- host: api.ceros.com
+  role: AWS API Gateway edge (behind Cloudflare)
+  probes:
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /openapi.json
+    status: 403
+  note: >-
+    Every path returns the same 42-byte API Gateway body {"message":"Missing Authentication Token"}
+    with x-amzn-errortype MissingAuthenticationTokenException — an unrouted gateway, not a wall
+    around a spec. The documented public API host is rest.ceros.com.
+- host: educate.ceros.com
+  role: Help centre (Intercom-hosted on a Ceros CNAME)
+  probes:
+  - path: /.well-known/security.txt
+    status: 200
+    file: ceros-educate-security.txt
+    owner: Intercom
+    applies_to_provider: false
+    note: 'Canonical: https://app.intercom.com/.well-known/security.txt — Intercom''s Bugcrowd programme, not Ceros''s.'
+  - path: /llms.txt
+    status: 200
+    file: ceros-educate-llms.txt
+    owner: Intercom
+    applies_to_provider: false
+    note: Two lines of Intercom help-centre boilerplate; no links, no API content.
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: trust.ceros.com
+  role: Trust centre (Vanta-hosted)
+  probes:
+  - path: /
+    status: 200
+    note: >-
+      Vanta trust-report SPA (slug 9ldxavzelo7uuybddceynn). Every /api/* path under it answers 200
+      with the same 6,402-byte HTML shell, so no machine-readable certification list is reachable;
+      certifications were NOT recorded because they could not be verified.

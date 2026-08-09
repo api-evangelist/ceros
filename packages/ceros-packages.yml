@@ -1,0 +1,116 @@
+generated: '2026-08-09'
+method: searched
+source: >-
+  npm registry (registry.npmjs.org), Maven Central (search.maven.org), the Ceros GitHub org
+  (github.com/ceros) and developers.ceros.com
+provider: Ceros
+summary: >-
+  Ceros ships no server-side API client library for its Public REST API — there is no npm, PyPI,
+  Maven, NuGet, Go, RubyGems, Packagist or crates.io client for rest.ceros.com. Everything it
+  distributes is client-side or CMS-side: a browser ESM SDK for published Flex experiences, a
+  release-candidate browser SDK for MarkUp commenting, and CMS connectors for AEM, Contentful and
+  Optimizely.
+packages:
+- name: '@ceros-dev/markup-sdk'
+  registry: npm
+  url: https://www.npmjs.com/package/@ceros-dev/markup-sdk
+  version: 1.0.0-rc.1
+  official: true
+  language: TypeScript
+  license: BSD-3-Clause
+  description: Browser SDK for embedding MarkUp commenting and collaboration features.
+  repository: https://github.com/ceros/ceros-markup
+  first_published: '2026-07-23'
+  status: release-candidate
+  note: >-
+    Source repository github.com/ceros/ceros-markup is not public (GitHub API 404); the published
+    package is the only public artifact.
+- name: '@ceros-dev/markup-sdk-core'
+  registry: npm
+  url: https://www.npmjs.com/package/@ceros-dev/markup-sdk-core
+  version: 1.0.0-rc.1
+  official: true
+  language: TypeScript
+  license: BSD-3-Clause
+  description: Shared TypeScript types and utilities for the MarkUp SDK packages.
+  repository: https://github.com/ceros/ceros-markup
+  first_published: '2026-07-23'
+  status: release-candidate
+- name: flex-experience-sdk
+  registry: cdn
+  url: https://assets.ceros.site/js/flex-experience-sdk.js
+  official: true
+  language: JavaScript
+  distribution: ES module served from the Ceros asset CDN — "there is nothing to install"
+  bare_specifier: '@ceros/flex-experience-sdk'
+  description: >-
+    Flex Experience SDK. Connects custom JavaScript to a published Ceros Flex experience —
+    connect(), wrap(), SDK_VERSION, then findByLocator()/findByTag() and the text/media/visibility/
+    pages capabilities.
+  docs: https://developers.ceros.com/flex-experience-sdk/getting-started
+  requires: Browser from 2023 or later (Chrome/Edge 89+, Safari 16.4+, Firefox 108+)
+  note: >-
+    The bare specifier '@ceros/flex-experience-sdk' resolves only inside Ceros-hosted pages — the
+    '@ceros' npm scope is empty (registry search returns 0 packages, and
+    registry.npmjs.org/@ceros%2Fflex-experience-sdk is 404). Off-Ceros pages import the CDN URL.
+  x-evidence:
+    url: https://assets.ceros.site/js/flex-experience-sdk.js
+    http_status: 200
+    content_type: application/javascript; charset=utf-8
+    bytes: 14776
+- name: com.ceros:ceros-aem-connector
+  registry: maven-central
+  official: true
+  language: Java
+  license: BSD-3-Clause
+  version: 1.0.2
+  description: >-
+    Adobe Experience Manager plugin that adds a Ceros Flex component to AEM. Ships as an OSGi
+    bundle plus a content package; five delivery modes (Fetch, Store, HTML Import, Inline, Embed).
+  repository: https://github.com/ceros/ceros-aem-connector
+  docs: https://developers.ceros.com/plugins/aem-connector
+  changelog: https://github.com/ceros/ceros-aem-connector/blob/main/CHANGELOG.md
+  latest_release: release-1.0.2
+  latest_release_date: '2026-08-07'
+  note: >-
+    groupId/artifactId read from the repo's own pom.xml (development version 1.0.3-SNAPSHOT). A
+    Maven Central solrsearch query for "ceros" did not return the coordinate, so publication to
+    Central was not independently confirmed — the docs state it is "a single content package on
+    Maven Central".
+- name: ceros-contentful-app
+  registry: github
+  official: true
+  language: TypeScript
+  license: MIT
+  url: https://github.com/ceros/ceros-contentful-app
+  description: >-
+    Contentful App Framework app that resolves a pasted Ceros experience URL via the Ceros oEmbed
+    endpoint and writes title, canonical URL and embed HTML into a Contentful entry.
+  note: Distributed as a Contentful app installation, not as a registry package.
+- name: ceros-optimizely-cms-plugin
+  registry: github
+  official: true
+  language: C#
+  url: https://github.com/ceros/ceros-optimizely-cms-plugin
+  description: Ceros plugin for Optimizely CMS.
+  last_pushed: '2024-02-01'
+  note: No README and no tagged release; carried here as a first-party repo, not a released package.
+- name: ceros-plugins
+  registry: github
+  official: true
+  language: JavaScript
+  license: MIT
+  url: https://github.com/ceros/ceros-plugins
+  description: >-
+    First-party plugin bundle injected into Ceros experiences — Eloqua tracking, Marketo Munchkin,
+    SoundJS audio and "highlander" (single-instance) helpers.
+  last_pushed: '2026-02-13'
+registries_checked:
+  npm: '@ceros-dev/markup-sdk, @ceros-dev/markup-sdk-core found; @ceros scope empty'
+  maven-central: solrsearch q=ceros returned no com.ceros coordinate
+  pypi: none
+  nuget: none
+  pkg-go-dev: none
+  rubygems: none
+  packagist: none
+  crates-io: none

@@ -1,0 +1,107 @@
+generated: '2026-08-09'
+method: searched
+source: https://developers.ceros.com/guides/versioning
+docs:
+- https://developers.ceros.com/guides/versioning
+- https://www.ceros.com/service-level-agreement/
+- https://status.ceros.com/
+provider: Ceros
+api: Ceros Public API
+versioning:
+  policy_url: https://developers.ceros.com/guides/versioning
+  scheme: dated snapshot (YYYY-MM-DD-HH-MM)
+  selector: 'x-ceros-api-version request header'
+  current_version: 2026-05-28-09-00
+  default_when_unpinned: latest
+  published_versions:
+  - version: 2026-05-28-09-00
+    current: true
+    operations: 4
+    docs: https://developers.ceros.com/api/public/ceros-public-api
+  - version: 2026-02-25-12-00
+    operations: 11
+    docs: https://developers.ceros.com/api/public/2026-02-25-12-00/ceros-public-api
+  - version: 2026-02-17-08-00
+    operations: 8
+    docs: https://developers.ceros.com/api/public/2026-02-17-08-00/ceros-public-api
+  - version: 2025-12-10-09-11
+    operations: 8
+    docs: https://developers.ceros.com/api/public/2025-12-10-09-11/ceros-public-api
+  stability_promise: >-
+    "Previously shipped versions remain permanent snapshots that don't change as the API evolves."
+    A new version is cut only when a change would otherwise break existing integrations.
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations_in_spec: []
+  note: >-
+    Ceros publishes no deprecation policy, no sunset timeline and no support window for older
+    dated versions, and neither the Deprecation nor the Sunset header (RFC 8594) is mentioned.
+    Its stated position is that it does not deprecate — it versions.
+  observed_surface_contraction:
+    finding: >-
+      The current version 2026-05-28-09-00 exposes 4 read-only GET operations. The immediately
+      previous version 2026-02-25-12-00 exposed 11, including every write: createPage, deletePage,
+      duplicatePage, batchUpdatePage, applyPageTemplate, plus getAllExperiencePages and
+      getCmlForSelector. Those seven operations have no page in the current version's reference
+      and their slugs 404 under the unversioned path.
+    evidence:
+    - url: https://developers.ceros.com/api/public/create-page
+      status: 404
+    - url: https://developers.ceros.com/api/public/get-all-experience-pages
+      status: 404
+    - url: https://developers.ceros.com/api/public/get-cml-for-selector
+      status: 404
+    - url: https://developers.ceros.com/api/public/2026-02-25-12-00/create-page
+      status: 200
+    interpretation: >-
+      Read as published: the write surface was withdrawn from the current version without any
+      deprecation notice, sunset date or migration note. Whether the endpoints still answer on
+      rest.ceros.com under a pinned older version could not be tested without a key. This is
+      exactly the case a deprecation policy exists to cover.
+sla:
+  published: true
+  url: https://www.ceros.com/service-level-agreement/
+  targets:
+  - scope: Ceros Platform
+    availability: 99.9%
+  - scope: All published experiences
+    availability: 99.995%
+  measurement: Unscheduled annual downtime (mins) / total annual minutes, over 525,600 minutes
+  support_response:
+    chat: Under ten minutes, Mon-Fri 0300-1800 EST
+    email: Within four hours during support hours
+  service_credits:
+  - shortfall: 1-3% below target
+    credit: 10% of monthly fee
+  - shortfall: 3-5% below target
+    credit: 15% of monthly fee
+  - shortfall: 5-7% below target
+    credit: 20% of monthly fee
+  - shortfall: over 7% below target
+    credit: one month refund
+  exclusions: [customer equipment, force majeure, use outside the Intended Purpose, scheduled maintenance, contractual suspension]
+  note: >-
+    The SLA covers the Ceros Platform and published experiences. It does not name the Public API
+    (rest.ceros.com) as a covered component.
+status_page:
+  published: true
+  url: https://status.ceros.com/
+  platform: Atlassian Statuspage
+  machine_readable: https://status.ceros.com/api/v2/summary.json
+  page_id: dwky76gz3s50
+  x-evidence:
+    url: https://status.ceros.com/api/v2/summary.json
+    http_status: 200
+  note: >-
+    Components tracked are platform-level (Studio, published experiences, third-party
+    dependencies). No component is named for the Public API.
+roadmap:
+  url: https://portal.productboard.com/ceros/7-ceros-staging-roadmap
+  platform: Productboard
+  x-evidence:
+    url: https://portal.productboard.com/ceros/7-ceros-staging-roadmap
+    http_status: 200
+  note: 'www.ceros.com/robots.txt explicitly disallows /roadmap on the marketing site.'

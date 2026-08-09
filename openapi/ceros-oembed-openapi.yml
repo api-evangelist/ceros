@@ -1,0 +1,145 @@
+openapi: 3.1.0
+info:
+  title: Ceros oEmbed API
+  version: '1.0'
+  description: >-
+    Public, unauthenticated oEmbed 1.0 provider endpoint for Ceros experiences. Given the canonical
+    URL of a published Ceros experience it returns an oEmbed `rich` response containing the title,
+    canonical URL, embed HTML (a responsive iframe plus the Ceros scroll-proxy script), and the
+    experience's natural width/height. This is the endpoint the first-party Ceros Contentful App
+    calls to resolve a pasted experience URL into an embed.
+  contact:
+    name: Ceros
+    url: https://www.ceros.com/
+  x-generated: '2026-08-09'
+  x-method: probed
+  x-source: >-
+    Not published as a spec by Ceros. Described from live probes of the endpoint plus Ceros's own
+    first-party Contentful App README, which documents that the app "calls the Ceros oEmbed endpoint
+    for that experience".
+  x-evidence:
+    fetched: '2026-08-09'
+    probes:
+    - url: https://view.ceros.com/oembed?url=https://view.ceros.com/creative-services/sdk&format=json
+      http_status: 200
+      content_type: application/json; charset=utf-8
+    - url: https://view.ceros.com/oembed?url=https://view.ceros.com/creative-services/sdk&format=xml
+      http_status: 501
+      note: XML serialisation is not implemented; JSON only.
+    - url: https://view.ceros.com/oembed?url=https://example.com/nope
+      http_status: 400
+      body: Invalid Request
+    - url: https://view.ceros.com/oembed
+      http_status: 404
+      note: Missing `url` falls through to the player 404 page.
+    source_doc: https://github.com/ceros/ceros-contentful-app
+servers:
+- url: https://view.ceros.com
+  description: Ceros experience delivery / player host
+tags:
+- name: oembed
+paths:
+  /oembed:
+    get:
+      operationId: getOEmbed
+      summary: Resolve a Ceros experience URL to an oEmbed response
+      description: >-
+        Returns an oEmbed 1.0 `rich` object for a published Ceros experience. Responds 400
+        `Invalid Request` when `url` is not a resolvable Ceros experience, 404 when `url` is
+        omitted, and 501 when `format=xml` is requested.
+      tags:
+      - oembed
+      security: []
+      parameters:
+      - name: url
+        in: query
+        required: true
+        description: Canonical URL of a published Ceros experience (`view.ceros.com/...` or a `*.ceros.site` vanity domain).
+        schema:
+          type: string
+          format: uri
+      - name: format
+        in: query
+        required: false
+        description: Response serialisation. Only `json` is implemented; `xml` returns 501.
+        schema:
+          type: string
+          enum:
+          - json
+          default: json
+      - name: maxwidth
+        in: query
+        required: false
+        description: oEmbed 1.0 maximum embed width hint. Accepted (200) — Ceros returns its own responsive embed regardless.
+        schema:
+          type: integer
+      - name: maxheight
+        in: query
+        required: false
+        description: oEmbed 1.0 maximum embed height hint.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: oEmbed rich response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - type
+                - url
+                - title
+                - html
+                - version
+                - provider_name
+                properties:
+                  type:
+                    type: string
+                    description: oEmbed object type. Ceros returns `rich`.
+                    examples: [rich]
+                  url:
+                    type: string
+                    format: uri
+                    description: Canonical URL of the experience.
+                  title:
+                    type: string
+                    description: Experience title.
+                  html:
+                    type: string
+                    description: Responsive embed markup — an aspect-ratio wrapper div, an iframe with class `ceros-experience`, and the `scroll-proxy.min.js` script tag.
+                  width:
+                    type: integer
+                    description: Natural embed width in CSS pixels.
+                  height:
+                    type: integer
+                    description: Natural embed height in CSS pixels.
+                  provider_name:
+                    type: string
+                    examples: [Ceros]
+                  provider_url:
+                    type: string
+                    format: uri
+                    examples: ['https://ceros.com']
+                  version:
+                    type: string
+                    examples: ['1.0']
+                  embedType:
+                    type: string
+                    description: Ceros extension naming the embed variant returned.
+                    examples: [full-height]
+              examples:
+                sdkExperience:
+                  summary: Live response captured 2026-08-09
+                  externalValue: ../examples/ceros-oembed-response.json
+        '400':
+          description: Invalid Request — `url` is not a resolvable Ceros experience.
+          content:
+            text/plain:
+              schema:
+                type: string
+                examples: ['Invalid Request']
+        '404':
+          description: Player 404 page — `url` query parameter omitted.
+        '501':
+          description: Not Implemented — `format=xml` requested.

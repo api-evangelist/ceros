@@ -1,0 +1,115 @@
+generated: '2026-08-09'
+method: derived
+source: openapi/ceros-public-api-openapi.yml, openapi/ceros-oembed-openapi.yml, https://developers.ceros.com/guides/getting-started, https://www.ceros.com/technical-faq-s/
+provider: Ceros
+scope: >-
+  Cross-cutting and industry standards asserted against what Ceros actually publishes. `conforms`
+  is true only where a published artifact or a published statement backs it.
+standards:
+- id: openapi
+  name: OpenAPI 3.x
+  conforms: true
+  evidence: >-
+    The reference at developers.ceros.com is generated from an OpenAPI document — every operation
+    page carries a complete OpenAPI operation object (operationId, parameters, responses,
+    securitySchemes, servers). Ceros does not serve the spec file itself at any URL; probes of
+    /openapi.json, /openapi.yaml, /swagger.json on developers.ceros.com and rest.ceros.com all
+    404. Captured in openapi/.
+  gap: Publish the source document at a stable URL so it can be fetched, diffed and generated from.
+- id: oembed
+  name: oEmbed 1.0
+  conforms: true
+  evidence: >-
+    https://view.ceros.com/oembed returns a compliant oEmbed 1.0 `rich` response (type, version
+    1.0, title, html, width, height, provider_name, provider_url) for a published experience;
+    probed 200 on 2026-08-09.
+  deviations:
+  - '`format=xml` returns 501; only JSON is implemented (oEmbed 1.0 makes XML optional in practice but names both).'
+  - No `<link rel="alternate" type="application/json+oembed">` discovery tag is emitted on experience pages, so consumers must know the endpoint.
+- id: rfc9457
+  name: RFC 9457 Problem Details for HTTP APIs
+  conforms: false
+  evidence: >-
+    All error responses are plain application/json with a Ceros-specific `errors[]` or `message`
+    envelope. No application/problem+json, no `type`/`title`/`status` members. See
+    errors/ceros-problem-types.yml.
+- id: rfc8594
+  name: RFC 8594 Sunset header / deprecation signalling
+  conforms: false
+  evidence: >-
+    No Sunset or Deprecation header, and no deprecation policy, is published. The versioning guide
+    states Ceros cuts new dated versions instead of deprecating. See lifecycle/ceros-lifecycle.yml.
+- id: idempotency
+  name: Idempotency keys for unsafe methods
+  conforms: false
+  evidence: No idempotency key, retry guidance or deduplication mechanism is documented.
+- id: pagination
+  name: Documented pagination
+  conforms: true
+  evidence: >-
+    listFolderExperiences documents 1-based `page` and `pageSize` (capped at 50, default 50) and
+    returns paging metadata. Page-number style; no cursor pagination.
+- id: oauth2
+  name: OAuth 2.0 on the API
+  conforms: false
+  evidence: >-
+    The only securityScheme in the spec is `bearerAuth` (http/bearer, bearerFormat API_KEY). No
+    OAuth flows, no scopes, no authorization server metadata
+    (/.well-known/oauth-authorization-server 404 on rest.ceros.com).
+- id: oidc
+  name: OpenID Connect
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404 on rest.ceros.com, developers.ceros.com and www.ceros.com.
+- id: saml
+  name: SAML 2.0 single sign-on (platform login, not the API)
+  conforms: true
+  evidence: >-
+    Ceros Technical FAQ: "Ceros supports both password authentication and enterprise SSO using
+    identity standards: LDAP, SAML, and OAuth." This governs Studio/Admin login, not rest.ceros.com.
+  source: https://www.ceros.com/technical-faq-s/
+- id: tls
+  name: TLS in transit
+  conforms: partial
+  evidence: >-
+    Technical FAQ: "Secure TLS connections are used for all logged in sessions. We support secure
+    connections for published Experience content but do not force it." TLS 1.3 observed on
+    rest.ceros.com and view.ceros.com; HSTS present on view.ceros.com (max-age 63072000) but
+    absent on rest.ceros.com. See security/ceros-domain-security.yml.
+- id: json-api
+  name: JSON:API
+  conforms: false
+  evidence: Response bodies are plain JSON objects with no JSON:API document structure.
+- id: asyncapi
+  name: AsyncAPI / event surface
+  conforms: false
+  applicable: false
+  evidence: >-
+    Ceros publishes no webhooks, no event catalog and no streaming surface. The only "events" in
+    the docs are browser-side Flex SDK DOM events
+    (https://developers.ceros.com/flex-experience-sdk/reference/events). Not penalised — there is
+    no event surface to specify.
+- id: mcp
+  name: Model Context Protocol
+  conforms: false
+  evidence: >-
+    No hosted or remote MCP server. /mcp probes 404 on rest.ceros.com and developers.ceros.com;
+    no MCP mention anywhere in the developer docs.
+- id: a2a
+  name: A2A Agent Card
+  conforms: false
+  evidence: >-
+    /.well-known/agent-card.json and /.well-known/agent.json probed on rest.ceros.com,
+    developers.ceros.com, www.ceros.com, educate.ceros.com and markup.io — all miss.
+compliance_programs:
+  trust_center:
+    url: https://trust.ceros.com/
+    platform: Vanta
+    http_status: 200
+    certifications_recorded: []
+    note: >-
+      The trust centre is a Vanta SPA; its certification list renders client-side and every /api/*
+      path returns the same HTML shell, so no certification could be verified. NO certifications
+      are recorded here and no Compliance pointer is emitted — naming SOC 2 or ISO 27001 without
+      reading them would be fabrication. The Ceros Technical FAQ, which is readable, names no
+      certification either.
+  gdpr_ccpa: not asserted in any machine-readable or plainly-readable Ceros page probed

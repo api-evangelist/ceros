@@ -1,0 +1,124 @@
+generated: '2026-08-09'
+method: derived
+source: openapi/ceros-public-api-openapi.yml, openapi/ceros-public-api-2026-02-25-openapi.yml
+provider: Ceros
+api: Ceros Public API
+summary: >-
+  Four entities and one value object. Every entity carries a dual identity — an opaque
+  `*ResourceId` (the modern handle every path parameter takes) and a `legacyId` numeric plus a
+  `slug`, exposed side by side. The whole graph hangs off Account, and every list response
+  restates the ancestor ids rather than nesting, so a client can walk down without a second call.
+entities:
+- name: Account
+  id_field: accountResourceId
+  alternate_ids: [accountLegacyId, accountSlug]
+  discovered_by: getCurrentAccount
+  fields: [accountName, accountResourceId]
+  note: The API key resolves to exactly one account; getCurrentAccount is the entry point to the whole graph.
+- name: Folder
+  id_field: resourceId
+  resource_type_const: folder
+  alternate_ids: [legacyId, parentSlug]
+  returned_by: getFolderTree
+  fields:
+  - self
+  - resourceType
+  - resourceId
+  - legacyId
+  - accountResourceId
+  - accountLegacyId
+  - accountSlug
+  - parentResourceId
+  - parentLegacyId
+  - parentSlug
+  - parentName
+  - createdByMemberId
+  - createdByMemberName
+  - createdAt
+  - deletedAt
+  - isAncestorDeleted
+  - lastModifiedByMemberId
+  - lastModifiedByMemberName
+  - children
+  note: >-
+    Self-referential tree. `children` nests; `depth` bounds it (default 2, 0 = all). Soft deletes
+    are visible — `deletedAt` and `isAncestorDeleted` are part of the contract.
+- name: Experience
+  id_field: resourceId
+  alternate_ids: [legacyId, slug, experienceAlias]
+  returned_by: listFolderExperiences
+  fields: [resourceId, legacyId, name, slug, experienceAlias, folderResourceId, status, createdAt, lastModifiedAt, firstPublishedAt, lastPublishedAt]
+  states:
+    status: [published, draft, deleted, unpublished]
+  kinds:
+  - name: Flex
+    note: Modern experiences. Embed codes available before publishing; experienceAlias is an empty string.
+  - name: Legacy
+    note: Must be published to return embed codes; only the snippet variants its layout supports.
+- name: Page
+  id_field: pageId
+  alternate_ids: [slug]
+  returned_by: getAllExperiencePages (2026-02-25-12-00 and earlier)
+  fields: [pageId, slug, label]
+  writes_in_earlier_versions: [createPage, deletePage, duplicatePage, batchUpdatePage, applyPageTemplate]
+  note: >-
+    Page is the only entity the API ever let you write, and only in versions up to
+    2026-02-25-12-00. The current version exposes no Page operation at all.
+value_objects:
+- name: EmbedCodes
+  returned_by: getEmbedCodes
+  fields: [viewUrl, assetBaseUrl, title, experienceAlias, isPageOverHeightHomogeneous, fullHeightEmbedCode, scrollableEmbedCode, inlineEmbedCode]
+  note: >-
+    Not addressable — a projection of an Experience. `isExport=true` rewrites viewUrl and
+    assetBaseUrl as export-relative paths (Legacy experiences only).
+- name: Paging
+  fields: [total, page, pages, pageSize, previous, next]
+  note: Only listFolderExperiences returns it.
+relationships:
+- from: Account
+  to: Folder
+  type: has_many
+  via: accountResourceId
+  evidence: 'GET /accounts/{accountResourceId}/folder-tree; every folder carries accountResourceId.'
+- from: Folder
+  to: Folder
+  type: has_many
+  via: parentResourceId
+  evidence: 'children[] nesting; parentResourceId is null at the root.'
+- from: Folder
+  to: Experience
+  type: has_many
+  via: folderResourceId
+  evidence: 'GET /folder/{folderResourceId}/experiences; each experience carries folderResourceId.'
+- from: Experience
+  to: Folder
+  type: belongs_to
+  via: folderResourceId
+- from: Experience
+  to: Page
+  type: has_many
+  via: experienceResourceId
+  evidence: 'GET /experiences/{experienceResourceId}/pages (2026-02-25-12-00 and earlier).'
+- from: Experience
+  to: EmbedCodes
+  type: has_one
+  via: experienceResourceId
+  evidence: 'GET /experiences/{experienceResourceId}/embed-codes.'
+- from: Folder
+  to: Account
+  type: belongs_to
+  via: accountResourceId
+traversal:
+  canonical_path:
+  - getCurrentAccount -> accountResourceId
+  - getFolderTree(accountResourceId) -> folder resourceId
+  - listFolderExperiences(folderResourceId) -> experience resourceId
+  - getEmbedCodes(experienceResourceId) -> embed markup
+  note: >-
+    Everything in the current version is reachable in four calls from a bare API key; there is no
+    way to look an experience up by id, slug or alias directly.
+observations:
+- Dual identity (resourceId + legacyId + slug) is exposed on every entity — a migration in progress, shipped in the public contract.
+- Path parameter names are inconsistent — `/folder/{folderResourceId}` is singular while `/accounts/...` and `/experiences/...` are plural.
+- No $ref reuse — every operation inlines a full JSON Schema draft 2020-12 document, so identical entities are redefined per response.
+- No `components.schemas` in the published spec at all; nothing is named, so generated clients get anonymous types.

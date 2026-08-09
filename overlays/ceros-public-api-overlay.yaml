@@ -1,0 +1,96 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements — Ceros Public API
+  version: 1.0.0
+extends: ../openapi/ceros-public-api-openapi.yml
+x-generated: '2026-08-09'
+x-method: generated
+x-source: >-
+  API Evangelist enrichment pass. Captures what Ceros documents in prose at
+  developers.ceros.com but does not express in the OpenAPI document itself. The original
+  openapi/ file is left verbatim.
+actions:
+- target: $.info
+  description: Record the documented base URL, docs and the version-selection header.
+  update:
+    termsOfService: https://www.ceros.com/terms-and-conditions/
+    x-documentation: https://developers.ceros.com/api/public/ceros-public-api
+    x-getting-started: https://developers.ceros.com/guides/getting-started
+    x-versioning-policy: https://developers.ceros.com/guides/versioning
+    x-version-header: x-ceros-api-version
+    x-status-page: https://status.ceros.com/
+    x-sla: https://www.ceros.com/service-level-agreement/
+- target: $
+  description: >-
+    Declare the x-ceros-api-version header that the getting-started guide requires on every
+    request but that the published spec omits entirely.
+  update:
+    x-required-headers:
+    - name: x-ceros-api-version
+      in: header
+      required: false
+      recommended: true
+      schema:
+        type: string
+        pattern: '^\d{4}-\d{2}-\d{2}-\d{2}-\d{2}$'
+        default: 2026-05-28-09-00
+      description: >-
+        Pins the dated API version. Omitting it floats the integration onto the latest version.
+        Ceros documents this in the getting-started guide but does not declare it as a parameter
+        on any operation.
+- target: $.components
+  description: Name the entities the spec inlines anonymously, so generated clients get real types.
+  update:
+    x-entities:
+      Account: {id: accountResourceId, source: getCurrentAccount}
+      Folder: {id: resourceId, source: getFolderTree, self_referential: true}
+      Experience: {id: resourceId, source: listFolderExperiences}
+      EmbedCodes: {source: getEmbedCodes, addressable: false}
+    x-entity-note: >-
+      The published spec has no components.schemas at all — every response inlines a full JSON
+      Schema draft 2020-12 document, so identical entities are redefined per operation.
+- target: $.paths['/accounts/current-account'].get
+  description: Mark the discovery entry point of the resource graph.
+  update:
+    x-entry-point: true
+    x-returns-id: accountResourceId
+    x-next-call: getFolderTree
+- target: $.paths['/accounts/{accountResourceId}/folder-tree'].get
+  update:
+    x-returns-id: resourceId (folder)
+    x-next-call: listFolderExperiences
+    x-expensive-expansions: [experiences, members]
+- target: $.paths['/folder/{folderResourceId}/experiences'].get
+  update:
+    x-pagination:
+      style: page-number
+      params: [page, pageSize]
+      max_page_size: 50
+      response_links: [paging.next, paging.previous]
+    x-returns-id: resourceId (experience)
+    x-next-call: getEmbedCodes
+- target: $.paths['/experiences/{experienceResourceId}/embed-codes'].get
+  update:
+    x-terminal: true
+    x-experience-kinds:
+      Flex: Always returns full-height, scrollable and inline snippets; available before publishing.
+      Legacy: Must be published; returns only the snippet variants the layout supports.
+- target: $.components.securitySchemes.bearerAuth
+  description: Record what the key actually grants — there is no scope model.
+  update:
+    x-key-issuance: Ceros account settings
+    x-scopes: none
+    x-blast-radius: >-
+      A single long-lived account-scoped key. Any holder can read the entire account's folder tree
+      and every experience in it. There is no per-key permission, no scope, and no published
+      rotation or revocation procedure.
+- target: $
+  description: Record what the surface does not publish, so consumers plan for it.
+  update:
+    x-gaps:
+      rate_limits: No limit, quota or 429 response is documented.
+      idempotency: No idempotency key mechanism.
+      request_id: No correlation header documented or observed.
+      spec_file: 'No downloadable OpenAPI at any URL; probes of /openapi.json, /openapi.yaml and /swagger.json on developers.ceros.com and rest.ceros.com all 404.'
+      error_format: 'Ceros-specific errors[] envelope, not RFC 9457 problem+json.'
+      runtime_divergence: 'Spec documents 401 with the errors[] envelope; the live host returns {"message":"UNAUTHORIZED"}.'
