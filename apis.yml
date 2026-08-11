@@ -33,36 +33,22 @@ tags:
 - Media and Publishing
 - SDK
 apis:
-- aid: ceros:ceros-public-api
-  name: Ceros Public API
-  description: >-
-    Read-only REST API over a Ceros account's content graph. The current dated version
-    (2026-05-28-09-00) exposes four operations — resolve the account from the API key, walk the
-    folder tree, list the experiences in a folder, and fetch the embed snippets and serving URLs
-    for an experience. Bearer API key auth; version pinned with the x-ceros-api-version header.
-    Earlier versions (through 2026-02-25-12-00) additionally exposed page reads and writes.
+- aid: ceros:ceros-accounts-api
+  name: Ceros Accounts API
+  description: The accounts API from Ceros — 1 operation(s) for accounts.
   humanURL: https://developers.ceros.com/api/public/ceros-public-api
   baseURL: https://rest.ceros.com
   tags:
-  - Content Management
-  - Interactive Content
-  - Embed
-  - Digital Experience
+  - accounts
   properties:
+  - type: OpenAPI
+    url: openapi/ceros-accounts-api-openapi.yml
   - type: Documentation
     url: https://developers.ceros.com/overview
   - type: APIReference
     url: https://developers.ceros.com/api/public/ceros-public-api
   - type: GettingStarted
     url: https://developers.ceros.com/guides/getting-started
-  - type: OpenAPI
-    url: openapi/ceros-public-api-openapi.yml
-    name: Ceros Public API 2026-05-28-09-00 (current)
-  - type: OpenAPI
-    url: openapi/ceros-public-api-2026-02-25-openapi.yml
-    name: Ceros Public API 2026-02-25-12-00
-  - type: Overlay
-    url: overlays/ceros-public-api-overlay.yaml
   - type: Authentication
     url: authentication/ceros-authentication.yml
   - type: Conventions
@@ -77,32 +63,178 @@ apis:
     url: changelog/ceros-changelog.yml
   - type: Conformance
     url: conformance/ceros-conformance.yml
-- aid: ceros:ceros-oembed-api
-  name: Ceros oEmbed API
-  description: >-
-    Public, unauthenticated oEmbed 1.0 provider endpoint. Given the canonical URL of a published
-    Ceros experience it returns the title, canonical URL, natural dimensions and responsive embed
-    markup (an aspect-ratio wrapper, an iframe and the Ceros scroll-proxy script). This is the
-    endpoint Ceros's own Contentful app calls to resolve a pasted experience URL.
-  humanURL: https://github.com/ceros/ceros-contentful-app
-  baseURL: https://view.ceros.com
-  tags:
-  - Embed
-  - oEmbed
-  - Interactive Content
-  properties:
-  - type: OpenAPI
-    url: openapi/ceros-oembed-openapi.yml
   - type: Example
     url: examples/ceros-oembed-response.json
+- aid: ceros:ceros-embedcodes-api
+  name: Ceros Embed Codes API
+  description: The embedCodes API from Ceros — 1 operation(s) for embedcodes.
+  humanURL: https://developers.ceros.com/api/public/ceros-public-api
+  baseURL: https://rest.ceros.com
+  tags:
+  - embedCodes
+  properties:
+  - type: OpenAPI
+    url: openapi/ceros-embedcodes-api-openapi.yml
+  - type: Documentation
+    url: https://developers.ceros.com/overview
+  - type: APIReference
+    url: https://developers.ceros.com/api/public/ceros-public-api
+  - type: GettingStarted
+    url: https://developers.ceros.com/guides/getting-started
+  - type: Authentication
+    url: authentication/ceros-authentication.yml
+  - type: Conventions
+    url: conventions/ceros-conventions.yml
+  - type: ErrorCatalog
+    url: errors/ceros-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/ceros-lifecycle.yml
+  - type: DataModel
+    url: data-model/ceros-data-model.yml
+  - type: ChangeLog
+    url: changelog/ceros-changelog.yml
   - type: Conformance
     url: conformance/ceros-conformance.yml
+  - type: Example
+    url: examples/ceros-oembed-response.json
+- aid: ceros:ceros-experience-api
+  name: Ceros Experience API
+  description: The experience API from Ceros — 1 operation(s) for experience.
+  humanURL: https://developers.ceros.com/api/public/ceros-public-api
+  baseURL: https://rest.ceros.com
+  tags:
+  - experience
+  properties:
+  - type: OpenAPI
+    url: openapi/ceros-experience-api-openapi.yml
+  - type: Documentation
+    url: https://developers.ceros.com/overview
+  - type: APIReference
+    url: https://developers.ceros.com/api/public/ceros-public-api
+  - type: GettingStarted
+    url: https://developers.ceros.com/guides/getting-started
+  - type: Authentication
+    url: authentication/ceros-authentication.yml
+  - type: Conventions
+    url: conventions/ceros-conventions.yml
+  - type: ErrorCatalog
+    url: errors/ceros-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/ceros-lifecycle.yml
+  - type: DataModel
+    url: data-model/ceros-data-model.yml
+  - type: ChangeLog
+    url: changelog/ceros-changelog.yml
+  - type: Conformance
+    url: conformance/ceros-conformance.yml
+  - type: Example
+    url: examples/ceros-oembed-response.json
+- aid: ceros:ceros-experiencepage-api
+  name: Ceros Experience Page API
+  description: The experiencePage API from Ceros — 6 operation(s) for experiencepage.
+  humanURL: https://developers.ceros.com/api/public/ceros-public-api
+  baseURL: https://rest.ceros.com
+  tags:
+  - experiencePage
+  properties:
+  - type: OpenAPI
+    url: openapi/ceros-experiencepage-api-openapi.yml
+  - type: Documentation
+    url: https://developers.ceros.com/overview
+  - type: APIReference
+    url: https://developers.ceros.com/api/public/ceros-public-api
+  - type: GettingStarted
+    url: https://developers.ceros.com/guides/getting-started
+  - type: Authentication
+    url: authentication/ceros-authentication.yml
+  - type: Conventions
+    url: conventions/ceros-conventions.yml
+  - type: ErrorCatalog
+    url: errors/ceros-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/ceros-lifecycle.yml
+  - type: DataModel
+    url: data-model/ceros-data-model.yml
+  - type: ChangeLog
+    url: changelog/ceros-changelog.yml
+  - type: Conformance
+    url: conformance/ceros-conformance.yml
+  - type: Example
+    url: examples/ceros-oembed-response.json
+- aid: ceros:ceros-folders-api
+  name: Ceros Folders API
+  description: The folders API from Ceros — 1 operation(s) for folders.
+  humanURL: https://developers.ceros.com/api/public/ceros-public-api
+  baseURL: https://rest.ceros.com
+  tags:
+  - folders
+  properties:
+  - type: OpenAPI
+    url: openapi/ceros-folders-api-openapi.yml
+  - type: Documentation
+    url: https://developers.ceros.com/overview
+  - type: APIReference
+    url: https://developers.ceros.com/api/public/ceros-public-api
+  - type: GettingStarted
+    url: https://developers.ceros.com/guides/getting-started
+  - type: Authentication
+    url: authentication/ceros-authentication.yml
+  - type: Conventions
+    url: conventions/ceros-conventions.yml
+  - type: ErrorCatalog
+    url: errors/ceros-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/ceros-lifecycle.yml
+  - type: DataModel
+    url: data-model/ceros-data-model.yml
+  - type: ChangeLog
+    url: changelog/ceros-changelog.yml
+  - type: Conformance
+    url: conformance/ceros-conformance.yml
+  - type: Example
+    url: examples/ceros-oembed-response.json
+- aid: ceros:ceros-oembed-api
+  name: Ceros Oembed API
+  description: The oembed API from Ceros — 1 operation(s) for oembed.
+  humanURL: https://developers.ceros.com/api/public/ceros-public-api
+  baseURL: https://rest.ceros.com
+  tags:
+  - oembed
+  properties:
+  - type: OpenAPI
+    url: openapi/ceros-oembed-api-openapi.yml
+  - type: Documentation
+    url: https://developers.ceros.com/overview
+  - type: APIReference
+    url: https://developers.ceros.com/api/public/ceros-public-api
+  - type: GettingStarted
+    url: https://developers.ceros.com/guides/getting-started
+  - type: Authentication
+    url: authentication/ceros-authentication.yml
+  - type: Conventions
+    url: conventions/ceros-conventions.yml
+  - type: ErrorCatalog
+    url: errors/ceros-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/ceros-lifecycle.yml
+  - type: DataModel
+    url: data-model/ceros-data-model.yml
+  - type: ChangeLog
+    url: changelog/ceros-changelog.yml
+  - type: Conformance
+    url: conformance/ceros-conformance.yml
+  - type: Example
+    url: examples/ceros-oembed-response.json
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: MCPServer
+  url: mcp/ceros-mcp.yml
+- type: Overlay
+  url: overlays/ceros-public-api-overlay.yaml
 - type: Website
   url: https://www.ceros.com/
 - type: DeveloperPortal
