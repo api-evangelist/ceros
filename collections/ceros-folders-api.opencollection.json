@@ -1,0 +1,61 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ceros Folders API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "folders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "getFolderTree",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://rest.ceros.com/accounts/:accountResourceId/folder-tree",
+            "params": [
+              {
+                "name": "accountResourceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "folder",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "depth",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "getFolderTree"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

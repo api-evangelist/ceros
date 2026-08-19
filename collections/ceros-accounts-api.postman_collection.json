@@ -1,0 +1,222 @@
+{
+  "item": [
+    {
+      "id": "84ac27f9-b5b6-4575-9acf-3f1c7139e39a",
+      "name": "accounts",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3aaa5900-ecf8-4fbc-ae02-ab2e94125738",
+          "name": "get Current Account",
+          "request": {
+            "name": "get Current Account",
+            "description": {
+              "content": "Get current account information using API key authentication",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                "current-account"
+              ],
+              "host": [
+                "{{accounts-current-account-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "705710fa-e115-4c46-8e48-e7d0df2c3db2",
+              "name": "200",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    "current-account"
+                  ],
+                  "host": [
+                    "{{accounts-current-account-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "null",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "21865936-230b-4409-9f68-23270c3c5928",
+              "name": "400",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    "current-account"
+                  ],
+                  "host": [
+                    "{{accounts-current-account-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "null",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1a9569ce-6995-4b8e-b5c0-5afbe1ce8364",
+              "name": "401",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    "current-account"
+                  ],
+                  "host": [
+                    "{{accounts-current-account-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "null",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://rest.ceros.com",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://rest.ceros.com",
+      "key": "accounts-current-account-Url"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "70363a0c-cb18-4a88-9b08-1e55244fa59c",
+    "name": "Ceros Accounts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Operations tagged accounts across 2 of this provider's published API definitions: ceros-public-api-2026-02-25-openapi.yml, ceros-public-api-openapi.yml. Each path carries the servers of the definition it was published in.\n\nContact Support:\n Name: Ceros Developer Docs",
+      "type": "text/plain"
+    }
+  }
+}

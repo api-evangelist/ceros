@@ -1,0 +1,224 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ceros Public Experience Page API",
+    "version": "2026-02-25-12-00"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "experiencePage",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "getAllExperiencePages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://rest.ceros.com/experiences/:experienceResourceId/pages",
+            "params": [
+              {
+                "name": "experienceResourceId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "getAllExperiencePages"
+        },
+        {
+          "info": {
+            "name": "createPage",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://rest.ceros.com/experiences/:experienceResourceId/pages",
+            "params": [
+              {
+                "name": "experienceResourceId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "createPage"
+        },
+        {
+          "info": {
+            "name": "deletePage",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://rest.ceros.com/experiences/:experienceResourceId/pages/:pageId",
+            "params": [
+              {
+                "name": "experienceResourceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "pageId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "deletePage"
+        },
+        {
+          "info": {
+            "name": "applyPageTemplate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://rest.ceros.com/experiences/:experienceResourceId/pages/:pageId/apply-template",
+            "params": [
+              {
+                "name": "experienceResourceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "pageId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "applyPageTemplate"
+        },
+        {
+          "info": {
+            "name": "batchUpdatePage",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://rest.ceros.com/experiences/:experienceResourceId/pages/:pageId/batch-update",
+            "params": [
+              {
+                "name": "experienceResourceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "pageId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "batchUpdatePage"
+        },
+        {
+          "info": {
+            "name": "getCmlForSelector",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://rest.ceros.com/experiences/:experienceResourceId/pages/:pageId/cml-for-selector",
+            "params": [
+              {
+                "name": "experienceResourceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "pageId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "selector",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "getCmlForSelector"
+        },
+        {
+          "info": {
+            "name": "duplicatePage",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://rest.ceros.com/experiences/:experienceResourceId/pages/:pageId/duplicate",
+            "params": [
+              {
+                "name": "experienceResourceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "pageId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "duplicatePage"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

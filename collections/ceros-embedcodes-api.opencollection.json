@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ceros Embed Codes API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "embedCodes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "getEmbedCodes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://rest.ceros.com/experiences/:experienceResourceId/embed-codes",
+            "params": [
+              {
+                "name": "experienceResourceId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "isExport",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "getEmbedCodes"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

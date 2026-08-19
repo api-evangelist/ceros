@@ -1,0 +1,55 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ceros Oembed API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "oembed",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Resolve a Ceros experience URL to an oEmbed response",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://view.ceros.com/oembed",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query",
+                "description": "Canonical URL of a published Ceros experience (`view.ceros.com/...` or a `*.ceros.site` vanity domain)."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Response serialisation. Only `json` is implemented; `xml` returns 501."
+              },
+              {
+                "name": "maxwidth",
+                "value": "",
+                "type": "query",
+                "description": "oEmbed 1.0 maximum embed width hint. Accepted (200) — Ceros returns its own responsive embed regardless."
+              },
+              {
+                "name": "maxheight",
+                "value": "",
+                "type": "query",
+                "description": "oEmbed 1.0 maximum embed height hint."
+              }
+            ]
+          },
+          "docs": "Returns an oEmbed 1.0 `rich` object for a published Ceros experience. Responds 400 `Invalid Request` when `url` is not a resolvable Ceros experience, 404 when `url` is omitted, and 501 when `format=xml` is requested."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

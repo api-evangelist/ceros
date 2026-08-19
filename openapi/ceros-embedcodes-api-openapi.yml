@@ -1,0 +1,128 @@
+openapi: 3.2.0
+info:
+  title: Ceros Embed Codes API
+  contact:
+    name: Ceros Developer Docs
+    url: https://developers.ceros.com/
+  version: '1.0'
+  description: 'Operations tagged embedCodes across 2 of this provider''s published API definitions: ceros-public-api-2026-02-25-openapi.yml, ceros-public-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://rest.ceros.com
+  description: Production server
+security:
+- bearerAuth: []
+tags:
+- name: embedCodes
+paths:
+  /experiences/{experienceResourceId}/embed-codes:
+    servers:
+    - url: https://rest.ceros.com
+      description: Production server
+    get:
+      tags:
+      - embedCodes
+      parameters:
+      - name: experienceResourceId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: isExport
+        in: query
+        required: true
+        content:
+          application/json:
+            schema:
+              default: false
+              type: boolean
+      operationId: getEmbedCodes
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  viewUrl:
+                    type: string
+                  assetBaseUrl:
+                    type: string
+                  title:
+                    type: string
+                  experienceAlias:
+                    type: string
+                  isPageOverHeightHomogeneous:
+                    type: boolean
+                  fullHeightEmbedCode:
+                    type: string
+                  scrollableEmbedCode:
+                    type: string
+                  inlineEmbedCode:
+                    type: string
+                required:
+                - viewUrl
+                - assetBaseUrl
+                - title
+                - experienceAlias
+                - isPageOverHeightHomogeneous
+                additionalProperties: false
+        '400':
+          description: '400'
+          content:
+            application/json:
+              schema:
+                $schema: https://json-schema.org/draft/2020-12/schema
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                        cause:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                              expected:
+                                type: string
+                              message:
+                                type: string
+                              path:
+                                type: array
+                                items:
+                                  type: string
+                              received:
+                                type: string
+                            required:
+                            - code
+                            - expected
+                            - message
+                            - path
+                            - received
+                            additionalProperties: false
+                      required:
+                      - message
+                      additionalProperties: false
+                required:
+                - errors
+                additionalProperties: false
+      description: getEmbedCodes
+      security:
+      - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API_KEY
+      description: API Key authentication using Bearer token format
+x-refined-from:
+- ceros-public-api-2026-02-25-openapi.yml
+- ceros-public-api-openapi.yml

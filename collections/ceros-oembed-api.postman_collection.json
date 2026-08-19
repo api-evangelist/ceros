@@ -1,0 +1,288 @@
+{
+  "item": [
+    {
+      "id": "2def095d-f196-4d02-a3be-a7db9824d244",
+      "name": "oembed",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8cba613e-a3d8-417e-ab1e-bc37673db521",
+          "name": "Resolve a Ceros experience URL to an oEmbed response",
+          "request": {
+            "name": "Resolve a Ceros experience URL to an oEmbed response",
+            "description": {
+              "content": "Returns an oEmbed 1.0 `rich` object for a published Ceros experience. Responds 400 `Invalid Request` when `url` is not a resolvable Ceros experience, 404 when `url` is omitted, and 501 when `format=xml` is requested.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "oembed"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "url",
+                  "value": "<uri>",
+                  "description": "(Required) Canonical URL of a published Ceros experience (`view.ceros.com/...` or a `*.ceros.site` vanity domain)."
+                },
+                {
+                  "disabled": false,
+                  "key": "format",
+                  "value": "json",
+                  "description": "Response serialisation. Only `json` is implemented; `xml` returns 501."
+                },
+                {
+                  "disabled": false,
+                  "key": "maxwidth",
+                  "value": "<integer>",
+                  "description": "oEmbed 1.0 maximum embed width hint. Accepted (200) — Ceros returns its own responsive embed regardless."
+                },
+                {
+                  "disabled": false,
+                  "key": "maxheight",
+                  "value": "<integer>",
+                  "description": "oEmbed 1.0 maximum embed height hint."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "47e6e6b5-6d0f-4bc9-864d-98827c0ce512",
+              "name": "oEmbed rich response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "oembed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "json"
+                    },
+                    {
+                      "key": "maxwidth",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "maxheight",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"summary\": \"Live response captured 2026-08-09\",\n  \"externalValue\": \"../examples/ceros-oembed-response.json\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9384147e-c1a1-4142-89bd-b7f185c75863",
+              "name": "Invalid Request — `url` is not a resolvable Ceros experience.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "oembed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "json"
+                    },
+                    {
+                      "key": "maxwidth",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "maxheight",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "55679567-8f8e-4d2a-89ca-dc2c2bb3678a",
+              "name": "Player 404 page — `url` query parameter omitted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "oembed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "json"
+                    },
+                    {
+                      "key": "maxwidth",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "maxheight",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7875d2ed-16ee-42af-8b0c-44634d634ad8",
+              "name": "Not Implemented — `format=xml` requested.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "oembed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "json"
+                    },
+                    {
+                      "key": "maxwidth",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "maxheight",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Implemented",
+              "code": 501,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://view.ceros.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "6a043efc-a9b3-4989-aca3-76f3d5b8ce78",
+    "name": "Ceros Oembed API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Public, unauthenticated oEmbed 1.0 provider endpoint for Ceros experiences. Given the canonical URL of a published Ceros experience it returns an oEmbed `rich` response containing the title, canonical URL, embed HTML (a responsive iframe plus the Ceros scroll-proxy script), and the experience's natural width/height. This is the endpoint the first-party Ceros Contentful App calls to resolve a pasted experience URL into an embed.\n\nContact Support:\n Name: Ceros",
+      "type": "text/plain"
+    }
+  }
+}

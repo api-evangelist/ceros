@@ -1,0 +1,322 @@
+{
+  "item": [
+    {
+      "id": "1060dafb-0aa7-4f91-88ac-73bbc2521ac6",
+      "name": "folders",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fdc2f676-cf6a-4c89-97b5-e1e0b56e5a23",
+          "name": "get Folder Tree",
+          "request": {
+            "name": "get Folder Tree",
+            "description": {
+              "content": "getFolderTree",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":accountResourceId",
+                "folder-tree"
+              ],
+              "host": [
+                "{{accounts-accountResourceId-folder-tree-Url}}"
+              ],
+              "query": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "expand",
+                  "value": ""
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "folder",
+                  "value": ""
+                },
+                {
+                  "description": {
+                    "content": "(Required) ",
+                    "type": "text/plain"
+                  },
+                  "key": "depth",
+                  "value": ""
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountResourceId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e35339e1-47ce-46f3-af11-27e02bf9f555",
+              "name": "200",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":accountResourceId",
+                    "folder-tree"
+                  ],
+                  "host": [
+                    "{{accounts-accountResourceId-folder-tree-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": ""
+                    },
+                    {
+                      "key": "folder",
+                      "value": ""
+                    },
+                    {
+                      "key": "depth",
+                      "value": ""
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountResourceId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "null",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e5e819ee-9273-4120-b70b-7eb865b54114",
+              "name": "400",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":accountResourceId",
+                    "folder-tree"
+                  ],
+                  "host": [
+                    "{{accounts-accountResourceId-folder-tree-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": ""
+                    },
+                    {
+                      "key": "folder",
+                      "value": ""
+                    },
+                    {
+                      "key": "depth",
+                      "value": ""
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountResourceId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "null",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5b4e3be2-e6d4-429f-bc28-d6640d01f0ce",
+              "name": "404",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":accountResourceId",
+                    "folder-tree"
+                  ],
+                  "host": [
+                    "{{accounts-accountResourceId-folder-tree-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": ""
+                    },
+                    {
+                      "key": "folder",
+                      "value": ""
+                    },
+                    {
+                      "key": "depth",
+                      "value": ""
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountResourceId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "null",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://rest.ceros.com",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://rest.ceros.com",
+      "key": "accounts-accountResourceId-folder-tree-Url"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "7bc97ce2-84e1-47ed-aea4-fc86461e2c7d",
+    "name": "Ceros Folders API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Operations tagged folders across 2 of this provider's published API definitions: ceros-public-api-2026-02-25-openapi.yml, ceros-public-api-openapi.yml. Each path carries the servers of the definition it was published in.\n\nContact Support:\n Name: Ceros Developer Docs",
+      "type": "text/plain"
+    }
+  }
+}

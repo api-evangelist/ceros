@@ -1,0 +1,32 @@
+{
+  "provider": "ceros",
+  "sources": [
+    "ceros-accounts-api-openapi.yml",
+    "ceros-embedcodes-api-openapi.yml",
+    "ceros-experience-api-openapi.yml",
+    "ceros-experiencepage-api-openapi.yml",
+    "ceros-folders-api-openapi.yml",
+    "ceros-oembed-api-openapi.yml"
+  ],
+  "outputs": [
+    "ceros-accounts-api-openapi.yml",
+    "ceros-embedcodes-api-openapi.yml",
+    "ceros-experience-api-openapi.yml",
+    "ceros-experiencepage-api-openapi.yml",
+    "ceros-folders-api-openapi.yml",
+    "ceros-oembed-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "ceros-accounts-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "ceros-embedcodes-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "ceros-experience-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "ceros-experiencepage-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "ceros-folders-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "ceros-oembed-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": []
+}

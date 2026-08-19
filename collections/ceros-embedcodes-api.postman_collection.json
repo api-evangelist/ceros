@@ -1,0 +1,224 @@
+{
+  "item": [
+    {
+      "id": "c1f9c48e-0ed3-4d8b-a545-b17c5347ce37",
+      "name": "embedCodes",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b176ccb5-650a-4817-9e7a-c4c78720b621",
+          "name": "get Embed Codes",
+          "request": {
+            "name": "get Embed Codes",
+            "description": {
+              "content": "getEmbedCodes",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "experiences",
+                ":experienceResourceId",
+                "embed-codes"
+              ],
+              "host": [
+                "{{experiences-experienceResourceId-embed-codes-Url}}"
+              ],
+              "query": [
+                {
+                  "description": {
+                    "content": "(Required) ",
+                    "type": "text/plain"
+                  },
+                  "key": "isExport",
+                  "value": ""
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "experienceResourceId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "8255fe58-2720-465e-a2fc-a601b403b2d3",
+              "name": "200",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "experiences",
+                    ":experienceResourceId",
+                    "embed-codes"
+                  ],
+                  "host": [
+                    "{{experiences-experienceResourceId-embed-codes-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "isExport",
+                      "value": ""
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "experienceResourceId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "null",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2a55bfd0-557c-4960-8bc4-b0aed3597345",
+              "name": "400",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "experiences",
+                    ":experienceResourceId",
+                    "embed-codes"
+                  ],
+                  "host": [
+                    "{{experiences-experienceResourceId-embed-codes-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "isExport",
+                      "value": ""
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "experienceResourceId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "null",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://rest.ceros.com",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://rest.ceros.com",
+      "key": "experiences-experienceResourceId-embed-codes-Url"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "99eaa202-fba9-449b-9b38-48c6806ce886",
+    "name": "Ceros Embed Codes API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Operations tagged embedCodes across 2 of this provider's published API definitions: ceros-public-api-2026-02-25-openapi.yml, ceros-public-api-openapi.yml. Each path carries the servers of the definition it was published in.\n\nContact Support:\n Name: Ceros Developer Docs",
+      "type": "text/plain"
+    }
+  }
+}
