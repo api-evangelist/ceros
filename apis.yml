@@ -28,6 +28,19 @@ tags:
 - CMS Integration
 - Marketing
 - Design
+- No-Code
+- Content Delivery
+- Media and Publishing
+- SDK
+tags_raw:
+- Content Management
+- Interactive Content
+- Digital Experience
+- Embed
+- oEmbed
+- CMS Integration
+- Marketing
+- Design
 - No Code
 - Content Delivery
 - Media and Publishing
@@ -39,6 +52,8 @@ apis:
   humanURL: https://developers.ceros.com/api/public/ceros-public-api
   baseURL: https://rest.ceros.com
   tags:
+  - Account
+  tags_raw:
   - accounts
   properties:
   - type: OpenAPI
@@ -70,7 +85,8 @@ apis:
   description: The embedCodes API from Ceros — 1 operation(s) for embedcodes.
   humanURL: https://developers.ceros.com/api/public/ceros-public-api
   baseURL: https://rest.ceros.com
-  tags:
+  tags: []
+  tags_raw:
   - embedCodes
   properties:
   - type: OpenAPI
@@ -103,6 +119,8 @@ apis:
   humanURL: https://developers.ceros.com/api/public/ceros-public-api
   baseURL: https://rest.ceros.com
   tags:
+  - Experience
+  tags_raw:
   - experience
   properties:
   - type: OpenAPI
@@ -134,7 +152,8 @@ apis:
   description: The experiencePage API from Ceros — 6 operation(s) for experiencepage.
   humanURL: https://developers.ceros.com/api/public/ceros-public-api
   baseURL: https://rest.ceros.com
-  tags:
+  tags: []
+  tags_raw:
   - experiencePage
   properties:
   - type: OpenAPI
@@ -167,6 +186,8 @@ apis:
   humanURL: https://developers.ceros.com/api/public/ceros-public-api
   baseURL: https://rest.ceros.com
   tags:
+  - Folders
+  tags_raw:
   - folders
   properties:
   - type: OpenAPI
@@ -199,6 +220,8 @@ apis:
   humanURL: https://developers.ceros.com/api/public/ceros-public-api
   baseURL: https://rest.ceros.com
   tags:
+  - oEmbed
+  tags_raw:
   - oembed
   properties:
   - type: OpenAPI
