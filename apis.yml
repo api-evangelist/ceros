@@ -40,7 +40,7 @@ tags:
 - CMS Integration
 - Marketing
 - Design
-- No Code
+- No-Code
 - Content Delivery
 - Media and Publishing
 - SDK
@@ -131,7 +131,7 @@ apis:
   humanURL: https://developers.ceros.com/api/public/ceros-public-api
   baseURL: https://rest.ceros.com
   tags:
-  - experience
+  - Experience
   tags_raw:
   - experience
   properties:
@@ -198,7 +198,7 @@ apis:
   humanURL: https://developers.ceros.com/api/public/ceros-public-api
   baseURL: https://rest.ceros.com
   tags:
-  - folders
+  - Folders
   tags_raw:
   - folders
   properties:
