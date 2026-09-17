@@ -239,18 +239,16 @@ apis:
     url: conformance/ceros-conformance.yml
   - type: Example
     url: examples/ceros-oembed-response.json
-- aid: ceros:ceros-oembed-api
-  name: Ceros Oembed API
-  description: The oembed API from Ceros — 1 operation(s) for oembed.
+- aid: ceros:ceros-o-embed-api
+  name: Ceros o Embed API
+  description: The o Embed API from Ceros — 1 operation(s) for o embed.
   humanURL: https://developers.ceros.com/api/public/ceros-public-api
   baseURL: https://rest.ceros.com
   tags:
-  - oEmbed
-  tags_raw:
-  - oembed
+  - o Embed
   properties:
   - type: OpenAPI
-    url: openapi/ceros-oembed-api-openapi.yml
+    url: openapi/ceros-o-embed-api-openapi.yml
   - type: Documentation
     url: https://developers.ceros.com/overview
   - type: APIReference
