@@ -29,7 +29,7 @@ servers:
 - url: https://view.ceros.com
   description: Ceros experience delivery / player host
 tags:
-- name: oembed
+- name: o Embed
 paths:
   /oembed:
     get:
@@ -37,7 +37,7 @@ paths:
       summary: Resolve a Ceros experience URL to an oEmbed response
       description: Returns an oEmbed 1.0 `rich` object for a published Ceros experience. Responds 400 `Invalid Request` when `url` is not a resolvable Ceros experience, 404 when `url` is omitted, and 501 when `format=xml` is requested.
       tags:
-      - oembed
+      - o Embed
       security: []
       parameters:
       - name: url

@@ -1,32 +1,37 @@
 {
   "provider": "ceros",
   "sources": [
-    "ceros-accounts-api-openapi.yml",
-    "ceros-embedcodes-api-openapi.yml",
-    "ceros-experience-api-openapi.yml",
-    "ceros-experiencepage-api-openapi.yml",
-    "ceros-folders-api-openapi.yml",
-    "ceros-oembed-api-openapi.yml"
+    "_original/ceros-oembed-openapi.yml",
+    "_original/ceros-public-api-2026-02-25-openapi.yml"
   ],
   "outputs": [
+    "ceros-oembed-api-openapi.yml",
     "ceros-accounts-api-openapi.yml",
     "ceros-embedcodes-api-openapi.yml",
     "ceros-experience-api-openapi.yml",
     "ceros-experiencepage-api-openapi.yml",
-    "ceros-folders-api-openapi.yml",
-    "ceros-oembed-api-openapi.yml"
+    "ceros-folders-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
   "notes": [
-    "ceros-accounts-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "ceros-embedcodes-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "ceros-experience-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "ceros-experiencepage-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "ceros-folders-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "ceros-oembed-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "apis.yml register: already-registered"
+    "1 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "ceros-oembed-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "ceros-public-api-2026-02-25-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "superseded outputs removed: ceros-o-embed-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 6 total)"
   ],
-  "skipped": []
+  "skipped": [
+    "_original/ceros-public-api-openapi.yml: archived document superseded by a larger archived document",
+    "ceros-accounts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ceros-embedcodes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ceros-experience-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ceros-experiencepage-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ceros-folders-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ceros-o-embed-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

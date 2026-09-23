@@ -1,27 +1,33 @@
 openapi: 3.2.0
 info:
-  title: Ceros Accounts API
+  title: Ceros Public Accounts API
+  version: 2026-02-25-12-00
+  description: Public API documentation for external integrations. Requires API key authentication.
   contact:
     name: Ceros Developer Docs
     url: https://developers.ceros.com/
-  version: '1.0'
-  description: 'Operations tagged accounts across 2 of this provider''s published API definitions: ceros-public-api-2026-02-25-openapi.yml, ceros-public-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+  x-source: Reconstructed verbatim from the OpenAPI operation objects Ceros publishes in its own developer documentation payloads at developers.ceros.com; Ceros does not serve a downloadable spec file.
+  x-evidence:
+    fetched: '2026-08-09'
+    docs_url: https://developers.ceros.com/api/public/2026-02-25-12-00/ceros-public-api
+    http_status: 200
+    api_host_probe:
+      url: https://rest.ceros.com/accounts/current-account
+      http_status: 401
+      body: '{"message":"UNAUTHORIZED"}'
 servers:
 - url: https://rest.ceros.com
   description: Production server
 security:
 - bearerAuth: []
 tags:
-- name: accounts
+- name: Accounts
 paths:
   /accounts/current-account:
-    servers:
-    - url: https://rest.ceros.com
-      description: Production server
     get:
       description: Get current account information using API key authentication
       tags:
-      - accounts
+      - Accounts
       parameters: []
       operationId: getCurrentAccount
       responses:
@@ -133,6 +139,8 @@ paths:
                 additionalProperties: false
       security:
       - bearerAuth: []
+      summary: Get current account
+      x-summary-source: derived
 components:
   securitySchemes:
     bearerAuth:
@@ -140,6 +148,3 @@ components:
       scheme: bearer
       bearerFormat: API_KEY
       description: API Key authentication using Bearer token format
-x-refined-from:
-- ceros-public-api-2026-02-25-openapi.yml
-- ceros-public-api-openapi.yml
