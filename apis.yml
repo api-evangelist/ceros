@@ -248,8 +248,6 @@ apis:
   humanURL: https://developers.ceros.com/api/public/ceros-public-api
   baseURL: https://rest.ceros.com
   tags:
-  - oEmbed
-  tags_raw:
   - o Embed
   properties:
   - type: OpenAPI
