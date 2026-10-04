@@ -248,6 +248,8 @@ apis:
   humanURL: https://developers.ceros.com/api/public/ceros-public-api
   baseURL: https://rest.ceros.com
   tags:
+  - oEmbed
+  tags_raw:
   - o Embed
   properties:
   - type: OpenAPI
@@ -280,6 +282,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/ceros-capability-edges.yml
+  name: Ceros Business Capability Map
 - type: X-MCPServerCandidate
   url: mcp/ceros-mcp.yml
   note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
