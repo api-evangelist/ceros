@@ -1,0 +1,26 @@
+slug: ceros
+provider: Ceros
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: experiencePage
+  spec_file: ceros-experiencepage-api-openapi.yml
+  capability_id: BC-400.70
+  capability_id_l1: BC-400
+  capability_name: Content Marketing Management
+  confidence: 0.7
+  evidence: POST /experiences/{experienceResourceId}/pages createPage Create page; POST .../apply-template
+    applyPageTemplate Apply page template; POST .../duplicate duplicatePage Duplicate page
+  reason: Full CRUD plus templating and duplication over the pages of an interactive content experience
+    — this is authoring/production of marketing content assets, matching Content Marketing Management.
+    Not product engineering, since the artefacts are published marketing experiences rather than software.
